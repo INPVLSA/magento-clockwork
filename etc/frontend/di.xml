@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\App\RouterList">
+        <arguments>
+            <argument name="routerList" xsi:type="array">
+                <item name="clockwork" xsi:type="array">
+                    <item name="class" xsi:type="string">Inpvlsa\Clockwork\Controller\Router</item>
+                    <item name="disable" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="string">10</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Clockwork\Support\Symfony\ClockworkSupport">
+        <arguments>
+            <argument name="container" xsi:type="object">Symfony\Component\DependencyInjection\Container</argument>
+            <argument name="config" xsi:type="array"/>
+        </arguments>
+    </type>
+
+    <type name="Clockwork\Support\Symfony\ClockworkFactory">
+        <arguments>
+            <argument name="container" xsi:type="object">Symfony\Component\DependencyInjection\Container</argument>
+        </arguments>
+    </type>
+
+    <!-- TODO:: REMOVE ? Start   -->
+    <type name="Symfony\Component\HttpKernel\Profiler\Profiler">
+        <arguments>
+            <!-- TODO:: Other storages -->
+            <argument name="storage" xsi:type="object">Symfony\Component\HttpKernel\Profiler\FileProfilerStorage</argument>
+        </arguments>
+    </type>
+
+    <type name="Symfony\Component\HttpKernel\Profiler\FileProfilerStorage">
+        <arguments>
+            <argument name="dsn" xsi:type="string">file:var/clockwork/file_storage</argument>
+        </arguments>
+    </type>
+    <!-- TODO:: REMOVE ? End   -->
+
+    <type name="Clockwork\Storage\FileStorage">
+        <arguments>
+            <argument name="path" xsi:type="string"></argument>
+        </arguments>
+    </type>
+</config>

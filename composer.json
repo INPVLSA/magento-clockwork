@@ -1,0 +1,23 @@
+{
+    "name": "inpvlsa/magento-clockwork",
+    "description": "Developer tools for Magento 2",
+    "type": "magento2-module",
+    "config": {
+        "sort-packages": true
+    },
+    "version": "0.0.1-dev",
+    "require": {
+        "php": "~8.1.0||~8.2.0||~8.3.0",
+        "magento/framework": "103.0.*",
+        "itsgoingd/clockwork": "^5.3"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Inpvlsa\\Clockwork\\": ""
+        }
+    }
+}
+
