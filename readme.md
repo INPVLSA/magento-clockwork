@@ -18,6 +18,6 @@ Profiler with request timeline
 ## Implementation roadmap
 
 - [x] Profiler with request timeline
-- [] Database queries
+- [ ] Database queries
 - [x] Events
 - [ ] Cache
