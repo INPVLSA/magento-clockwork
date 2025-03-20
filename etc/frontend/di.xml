@@ -21,12 +21,6 @@
         </arguments>
     </type>
 
-    <type name="Clockwork\Support\Symfony\ClockworkFactory">
-        <arguments>
-            <argument name="container" xsi:type="object">Symfony\Component\DependencyInjection\Container</argument>
-        </arguments>
-    </type>
-
     <!-- TODO:: REMOVE ? Start   -->
     <type name="Symfony\Component\HttpKernel\Profiler\Profiler">
         <arguments>

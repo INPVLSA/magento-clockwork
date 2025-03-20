@@ -7,19 +7,18 @@ use Magento\Framework\App\RequestInterface;
 
 class Service
 {
-    protected Clockwork $instance;
-    protected bool $enabled = true;
+    public static bool $enabled = true;
 
     public function initialize(RequestInterface $request): void
     {
         $this->validateRequest($request);
 
-        if (!$this->enabled) {
+        if (!Service::$enabled) {
             return;
         }
-        $this->instance = new Clockwork(['storage_files_path' => BP . '/var/clockwork', 'enable' => true]);
+        Clockwork::init(['storage_files_path' => BP . '/var/clockwork', 'enable' => true]);
 
-        $authenticator = $this->instance->getClockwork()->authenticator();
+        $authenticator = $this->getInstance()->getClockwork()->authenticator();
         $authHeader = $request->getHeader('X-Clockwork-Auth');
         $authenticated = $authenticator->check($authHeader);
 
@@ -27,14 +26,18 @@ class Service
 
             return;
         }
+    }
 
-        $this->instance->requestProcessed();
+    public function getInstance(): Clockwork
+    {
+        return Clockwork::instance();
     }
 
     protected function validateRequest(RequestInterface $request): void
     {
         if (str_starts_with($request->getPathInfo(), '/clockwork_static')
             || str_starts_with($request->getPathInfo(), '/clockwork')
+            || str_starts_with($request->getPathInfo(), '/__clockwork')
         ) {
             $this->disable();
         }
@@ -42,14 +45,19 @@ class Service
 
     public function sendHeaders(): void
     {
-        if (!$this->enabled) {
+        if (!Service::$enabled) {
             return;
         }
-        $this->instance->sendHeaders();
+        $this->getInstance()->sendHeaders();
     }
 
     public function disable(): void
     {
-        $this->enabled = false;
+        Service::$enabled = false;
+    }
+
+    public function getStatus(): bool
+    {
+        return Service::$enabled && Clockwork::instance();
     }
 }
