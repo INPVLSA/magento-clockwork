@@ -21,12 +21,6 @@
         </arguments>
     </type>
 
-    <type name="Clockwork\Support\Symfony\ClockworkFactory">
-        <arguments>
-            <argument name="container" xsi:type="object">Symfony\Component\DependencyInjection\Container</argument>
-        </arguments>
-    </type>
-
     <!-- TODO:: REMOVE ? Start   -->
     <type name="Symfony\Component\HttpKernel\Profiler\Profiler">
         <arguments>
@@ -44,7 +38,12 @@
 
     <type name="Clockwork\Storage\FileStorage">
         <arguments>
-            <argument name="path" xsi:type="string"></argument>
+            <argument name="path" xsi:type="string"/>
         </arguments>
+    </type>
+
+    <type name="Magento\Framework\App\FrontController">
+        <plugin name="Inpvlsa_Clockwork::frontControllerClockworkRequest"
+                type="Inpvlsa\Clockwork\Plugin\Framework\App\FrontControllerClockwork"/>
     </type>
 </config>
