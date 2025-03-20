@@ -46,4 +46,9 @@
         <plugin name="Inpvlsa_Clockwork::frontControllerClockworkRequest"
                 type="Inpvlsa\Clockwork\Plugin\Framework\App\FrontControllerClockwork"/>
     </type>
+
+    <type name="Magento\Framework\DB\Adapter\Pdo\Mysql">
+        <plugin name="Inpvlsa_Clockwork::zendDbAdapterClockworkQuery"
+                type="Inpvlsa\Clockwork\Plugin\Framework\DB\Adapter\Pdo\MysqlClockwork"/>
+    </type>
 </config>

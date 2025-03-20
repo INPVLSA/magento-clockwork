@@ -2,8 +2,8 @@
 
 namespace Inpvlsa\Clockwork\Model\Clockwork;
 
-use Clockwork\Request\UserDataItem;
 use Clockwork\Support\Vanilla\Clockwork;
+use Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDbDataSource;
 use Magento\Framework\App\RequestInterface;
 
 class Service
@@ -11,6 +11,10 @@ class Service
     public static bool $enabled = true;
 
     protected ?array $requestDetails = null;
+
+    public function __construct(
+        protected ZendDbDataSource $dataSource
+    ) {}
 
     public function initialize(RequestInterface $request): void
     {
@@ -29,6 +33,7 @@ class Service
 
             return;
         }
+        $this->getInstance()->getClockwork()->addDataSource($this->dataSource);
         $this->requestDetails = [
             'PathInfo' => $request->getPathInfo(),
             'IsSecure' => $request->isSecure(),
