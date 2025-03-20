@@ -2,12 +2,15 @@
 
 namespace Inpvlsa\Clockwork\Model\Clockwork;
 
+use Clockwork\Request\UserDataItem;
 use Clockwork\Support\Vanilla\Clockwork;
 use Magento\Framework\App\RequestInterface;
 
 class Service
 {
     public static bool $enabled = true;
+
+    protected ?array $requestDetails = null;
 
     public function initialize(RequestInterface $request): void
     {
@@ -26,6 +29,13 @@ class Service
 
             return;
         }
+        $this->requestDetails = [
+            'PathInfo' => $request->getPathInfo(),
+            'IsSecure' => $request->isSecure(),
+            'RouteName' => $request->getRouteName(),
+            'Method' => $request->getMethod(),
+            'RequestUri' => $request->getRequestUri()
+        ];
     }
 
     public function getInstance(): Clockwork
@@ -43,12 +53,24 @@ class Service
         }
     }
 
-    public function sendHeaders(): void
+    public function finish(): void
     {
         if (!Service::$enabled) {
             return;
         }
+        $this->collectAdditionalTabsData();
+        $this->getInstance()->requestProcessed();
         $this->getInstance()->sendHeaders();
+    }
+
+    protected function collectAdditionalTabsData(): void
+    {
+        $data = [];
+
+        foreach ($this->requestDetails as $key => $value) {
+            $data[] = ['Type' => $key, 'Value' => $value];
+        }
+        Clockwork::instance()->userData('request')->title('Request Details')->table('Request Details', $data);
     }
 
     public function disable(): void
