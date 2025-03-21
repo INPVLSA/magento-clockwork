@@ -3,6 +3,7 @@
 namespace Inpvlsa\Clockwork\Model\Profiler;
 
 use Clockwork\Clockwork;
+use Clockwork\Request\Timeline\Event;
 use Inpvlsa\Clockwork\Model\Clockwork\Service;
 use Magento\Framework\Profiler\Driver\Standard\OutputInterface;
 use Magento\Framework\Profiler\Driver\Standard\Stat;
@@ -20,8 +21,11 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
     public function start($timerId, array $tags = null): void
     {
         if (Service::$enabled) {
-            $name = $this->getName($timerId);
-            $this->clock()->event($this->getName($timerId))->color($this->getColor($timerId, $name))->begin();
+            $name = $this->getName($timerId, $tags);
+            /** @var Event $event */
+            $event = $this->clock()->event($name, ['data' => $tags]);
+            $event->color($this->getColor($timerId, $tags));
+            $event->begin();
         }
     }
 
@@ -43,46 +47,66 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
     {
     }
 
-    protected function getName(string $timerId): string
+    protected function getData(string $timerId): array
     {
-        if (!isset($this->nameCache[$timerId])) {
-            if (str_starts_with($timerId, 'magento->routers_match->CONTROLLER_ACTION:')) {
-                $this->nameCache[$timerId] = 'Controller: ' . substr($timerId, 42);
-            } elseif (str_contains($timerId, '->')) {
-                $parts = explode('->', $timerId);
-                $lastPart = end($parts);
+        $data = [];
 
-                if (str_starts_with($lastPart, 'OBSERVER:')) {
-                    $this->nameCache[$timerId] = 'Observer: ' . substr($lastPart, 9);
-                }
+        if (preg_match('/.*->OBSERVER:(.*?\w)$/', $timerId, $matches)) {
+            $data['type'] = 'observer';
+        } elseif (preg_match('/.*->EVENT:(.*?\w)$/', $timerId, $matches)) {
+            $data['type'] = 'event';
+        }
+
+        return $data;
+    }
+
+    protected function getName(string $timerId, ?array $tags = []): string
+    {
+        if (isset($tags['group'])) {
+            $this->nameCache[$timerId] = match ($tags['group']) {
+                'EVENT' => 'Event: ' . $tags['name'],
+                'TEMPLATE' => 'Template: ' . $tags['file_name'],
+                'cache' => 'Cache: ' . $tags['operation'],
+                'EAV' => 'EAV: ' . $tags['method'],
+                default => false,
+            };
+        }
+
+        if (!isset($this->nameCache[$timerId]) || !$this->nameCache[$timerId]) {
+            // Removing `magento->`
+            $name = substr($timerId, 9);
+            // Replacing profiler separator
+            $name = str_replace('->', '/', $name);
+
+            if (preg_match('/.*\/OBSERVER:(.*?\w)$/', $name, $matches)) {
+                $name = 'Observer: ' . $matches[1];
+            } elseif (preg_match('/.*\/EVENT:(.*?\w)$/', $name, $matches)) {
+                $name = 'Event dispatch: ' . $matches[1];
+            } else {
+                $name = str_replace('action_body/LAYOUT/layout_generate_blocks/Magento\Framework\View\Layout::Magento\Framework\View\Layout::generateElements/generate_elements', '<layout_generate_blocks:generate_elements>', $name);
+                $name = preg_replace('~routers_match/CONTROLLER_ACTION:(\w+?)/~', '<c:$1>/', $name);
             }
 
-            if (!isset($this->nameCache[$timerId])) {
-                $this->nameCache[$timerId] = 'Profiler: ' . $timerId;
-            }
+            $this->nameCache[$timerId] = $name;
         }
 
         return $this->nameCache[$timerId];
     }
 
-    protected function getColor(string $timerId, string $name): string
+    protected function getColor(string $timerId, ?array $tags): string
     {
-        if (str_starts_with($name, 'Observer:')) {
-            return 'green';
+        $color = 'blue';
+
+        if ($tags) {
+            if (isset($tags['group'])) {
+                $color = match ($tags['group']) {
+                    'EVENT' => 'green',
+                    'TEMPLATE' => 'purple',
+                    default => 'blue',
+                };
+            }
         }
 
-        if (str_starts_with($name, 'Controller:')) {
-            return 'green';
-        }
-
-        if (str_contains($timerId, 'LAYOUT->layout_generate_blocks')) {
-            return 'red';
-        }
-
-        if (str_starts_with($timerId, 'magento->routers_match')) {
-            return 'blue';
-        }
-
-        return 'purple';
+        return $color;
     }
 }

@@ -3,17 +3,23 @@
 namespace Inpvlsa\Clockwork\Model\Clockwork;
 
 use Clockwork\Support\Vanilla\Clockwork;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 
 class Service
 {
     public static bool $enabled = true;
+    protected ?array $requestDetails = null;
+
+    public function __construct(
+        protected array $dataSources = []
+    ) {}
 
     public function initialize(RequestInterface $request): void
     {
         $this->validateRequest($request);
 
-        if (!Service::$enabled) {
+        if (!Service::$enabled || !$request instanceof Http) {
             return;
         }
         Clockwork::init(['storage_files_path' => BP . '/var/clockwork', 'enable' => true]);
@@ -26,6 +32,17 @@ class Service
 
             return;
         }
+
+        foreach ($this->dataSources as $dataSource) {
+            $this->getInstance()->getClockwork()->addDataSource($dataSource);
+        }
+        $this->requestDetails = [
+            'PathInfo' => $request->getPathInfo(),
+            'IsSecure' => $request->isSecure(),
+            'RouteName' => $request->getRouteName(),
+            'Method' => $request->getMethod(),
+            'RequestUri' => $request->getRequestUri()
+        ];
     }
 
     public function getInstance(): Clockwork
@@ -33,6 +50,11 @@ class Service
         return Clockwork::instance();
     }
 
+    /**
+     * @param Http $request
+     *
+     * @return void
+     */
     protected function validateRequest(RequestInterface $request): void
     {
         if (str_starts_with($request->getPathInfo(), '/clockwork_static')
@@ -43,12 +65,24 @@ class Service
         }
     }
 
-    public function sendHeaders(): void
+    public function finish(): void
     {
         if (!Service::$enabled) {
             return;
         }
+        $this->collectAdditionalTabsData();
+        $this->getInstance()->requestProcessed();
         $this->getInstance()->sendHeaders();
+    }
+
+    protected function collectAdditionalTabsData(): void
+    {
+        $data = [];
+
+        foreach ($this->requestDetails as $key => $value) {
+            $data[] = ['Type' => $key, 'Value' => $value];
+        }
+        Clockwork::instance()->userData('request')->title('Request Details')->table('Request Details', $data);
     }
 
     public function disable(): void

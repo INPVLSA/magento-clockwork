@@ -14,6 +14,16 @@
         </arguments>
     </type>
 
+    <type name="Inpvlsa\Clockwork\Model\Clockwork\Service">
+        <arguments>
+            <argument name="dataSources" xsi:type="array">
+                <item name="db" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDbDataSource</item>
+                <item name="elastic" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\ElasticsearchDataSource</item>
+                <item name="opensearch" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\OpenSearchDataSource</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Clockwork\Support\Symfony\ClockworkSupport">
         <arguments>
             <argument name="container" xsi:type="object">Symfony\Component\DependencyInjection\Container</argument>
@@ -45,5 +55,20 @@
     <type name="Magento\Framework\App\FrontController">
         <plugin name="Inpvlsa_Clockwork::frontControllerClockworkRequest"
                 type="Inpvlsa\Clockwork\Plugin\Framework\App\FrontControllerClockwork"/>
+    </type>
+
+    <type name="Magento\Framework\DB\Adapter\Pdo\Mysql">
+        <plugin name="Inpvlsa_Clockwork::zendDbAdapterClockworkQuery"
+                type="Inpvlsa\Clockwork\Plugin\Framework\DB\Adapter\Pdo\MysqlClockwork"/>
+    </type>
+
+    <type name="Magento\Elasticsearch7\Model\Client\Elasticsearch">
+        <plugin name="Inpvlsa_Clockwork::elasticsearch7ClientClockworkQuery"
+                type="Inpvlsa\Clockwork\Plugin\Elasticsearch7\Model\Client\ElasticsearchClockwork"/>
+    </type>
+
+    <type name="Magento\OpenSearch\Model\OpenSearch">
+        <plugin name="Inpvlsa_Clockwork::openSearchClockworkQuery"
+                type="Inpvlsa\Clockwork\Plugin\OpenSearch\Model\OpenSearchClockwork"/>
     </type>
 </config>

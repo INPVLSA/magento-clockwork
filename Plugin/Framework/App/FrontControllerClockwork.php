@@ -27,8 +27,7 @@ class FrontControllerClockwork
     public function afterDispatch(FrontController $subject, $result)
     {
         if ($this->clockworkService->getStatus()) {
-            $this->clockworkService->getInstance()->requestProcessed();
-            $this->clockworkService->sendHeaders();
+            $this->clockworkService->finish();
         }
 
         return $result;
