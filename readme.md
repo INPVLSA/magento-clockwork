@@ -17,4 +17,7 @@ composer require inpvlsa/magento2-clockwork --dev
 
 ## Features
 
-Profiler with request timeline
+- Timeline with:
+    - All profiler events
+    - Database queries
+- Elasticsearch/OpenSearch queries

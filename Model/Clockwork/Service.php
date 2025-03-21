@@ -3,26 +3,23 @@
 namespace Inpvlsa\Clockwork\Model\Clockwork;
 
 use Clockwork\Support\Vanilla\Clockwork;
-use Inpvlsa\Clockwork\Model\Clockwork\DataSource\ElasticsearchDataSource;
-use Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDbDataSource;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 
 class Service
 {
     public static bool $enabled = true;
     protected ?array $requestDetails = null;
-    protected ?array $searchEngineData = null;
 
     public function __construct(
-        protected ZendDbDataSource $dbDataSource,
-        protected ElasticsearchDataSource $esDataSource
+        protected array $dataSources = []
     ) {}
 
     public function initialize(RequestInterface $request): void
     {
         $this->validateRequest($request);
 
-        if (!Service::$enabled) {
+        if (!Service::$enabled || !$request instanceof Http) {
             return;
         }
         Clockwork::init(['storage_files_path' => BP . '/var/clockwork', 'enable' => true]);
@@ -35,8 +32,10 @@ class Service
 
             return;
         }
-        $this->getInstance()->getClockwork()->addDataSource($this->dbDataSource);
-        $this->getInstance()->getClockwork()->addDataSource($this->esDataSource);
+
+        foreach ($this->dataSources as $dataSource) {
+            $this->getInstance()->getClockwork()->addDataSource($dataSource);
+        }
         $this->requestDetails = [
             'PathInfo' => $request->getPathInfo(),
             'IsSecure' => $request->isSecure(),
@@ -51,6 +50,11 @@ class Service
         return Clockwork::instance();
     }
 
+    /**
+     * @param Http $request
+     *
+     * @return void
+     */
     protected function validateRequest(RequestInterface $request): void
     {
         if (str_starts_with($request->getPathInfo(), '/clockwork_static')

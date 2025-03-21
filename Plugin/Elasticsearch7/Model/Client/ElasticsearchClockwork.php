@@ -10,12 +10,8 @@ class ElasticsearchClockwork
         protected ElasticsearchDataSource $dataSource
     ) {}
 
-    /**
-     * @noinspection PhpFullyQualifiedNameUsageInspection
-     * @noinspection PhpDeprecationInspection
-     */
     public function aroundQuery(
-        \Magento\Elasticsearch7\Model\Client\Elasticsearch $subject,
+        $subject,
         callable $proceed,
         array $query
     ): array {

@@ -10,7 +10,7 @@ class ElasticsearchDataSource extends DataSource
 {
     protected array $searchData = [];
 
-    protected const string NAME = 'ElasticSearch';
+    protected const string  NAME = 'ElasticSearch';
 
     public function resolve(Request $request): Request
     {
@@ -24,14 +24,14 @@ class ElasticsearchDataSource extends DataSource
                     $queryData[] = ['Key' => $key, 'Value' => $value];
                 }
 
-                $dataTab->table('ElasticSearch Query', $queryData);
+                $dataTab->table(static::NAME . ' Query', $queryData);
 
                 $queryData = [];
 
                 foreach ($search['result'] as $key => $value) {
                     $queryData[] = ['Key' => $key, 'Value' => $value];
                 }
-                $dataTab->table('ElasticSearch Result', $queryData);
+                $dataTab->table(static::NAME . ' Result', $queryData);
             }
         }
 
