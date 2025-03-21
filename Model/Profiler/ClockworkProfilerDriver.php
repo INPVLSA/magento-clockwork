@@ -82,6 +82,8 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
                 $name = 'Observer: ' . $matches[1];
             } elseif (preg_match('/.*\/EVENT:(.*?\w)$/', $name, $matches)) {
                 $name = 'Event dispatch: ' . $matches[1];
+            } elseif (preg_match('/.*\/BLOCK_ACTION:(.*?)>(.*?)$/', $name, $matches)) {
+                $name = "Block($matches[1])->$matches[2]";
             } else {
                 $name = str_replace('action_body/LAYOUT/layout_generate_blocks/Magento\Framework\View\Layout::Magento\Framework\View\Layout::generateElements/generate_elements', '<layout_generate_blocks:generate_elements>', $name);
                 $name = preg_replace('~routers_match/CONTROLLER_ACTION:(\w+?)/~', '<c:$1>/', $name);
