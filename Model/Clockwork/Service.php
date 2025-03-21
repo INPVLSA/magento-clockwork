@@ -3,17 +3,19 @@
 namespace Inpvlsa\Clockwork\Model\Clockwork;
 
 use Clockwork\Support\Vanilla\Clockwork;
+use Inpvlsa\Clockwork\Model\Clockwork\DataSource\ElasticsearchDataSource;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDbDataSource;
 use Magento\Framework\App\RequestInterface;
 
 class Service
 {
     public static bool $enabled = true;
-
     protected ?array $requestDetails = null;
+    protected ?array $searchEngineData = null;
 
     public function __construct(
-        protected ZendDbDataSource $dataSource
+        protected ZendDbDataSource $dbDataSource,
+        protected ElasticsearchDataSource $esDataSource
     ) {}
 
     public function initialize(RequestInterface $request): void
@@ -33,7 +35,8 @@ class Service
 
             return;
         }
-        $this->getInstance()->getClockwork()->addDataSource($this->dataSource);
+        $this->getInstance()->getClockwork()->addDataSource($this->dbDataSource);
+        $this->getInstance()->getClockwork()->addDataSource($this->esDataSource);
         $this->requestDetails = [
             'PathInfo' => $request->getPathInfo(),
             'IsSecure' => $request->isSecure(),

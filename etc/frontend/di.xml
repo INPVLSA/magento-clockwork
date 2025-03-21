@@ -51,4 +51,9 @@
         <plugin name="Inpvlsa_Clockwork::zendDbAdapterClockworkQuery"
                 type="Inpvlsa\Clockwork\Plugin\Framework\DB\Adapter\Pdo\MysqlClockwork"/>
     </type>
+
+    <type name="Magento\Elasticsearch7\Model\Client\Elasticsearch">
+        <plugin name="Inpvlsa_Clockwork::elasticsearch7ClientClockworkQuery"
+                type="Inpvlsa\Clockwork\Plugin\Elasticsearch7\Model\Client\ElasticsearchClockwork"/>
+    </type>
 </config>
