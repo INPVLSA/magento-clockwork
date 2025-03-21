@@ -5,13 +5,26 @@ namespace Inpvlsa\Clockwork\Model\Profiler;
 use Clockwork\Clockwork;
 use Clockwork\Request\Timeline\Event;
 use Inpvlsa\Clockwork\Model\Clockwork\Service;
+use Inpvlsa\Clockwork\Model\Profiler\GroupHandler\AbstractGroupHandler;
 use Magento\Framework\Profiler\Driver\Standard\OutputInterface;
 use Magento\Framework\Profiler\Driver\Standard\Stat;
 use Magento\Framework\Profiler\DriverInterface;
 
 class ClockworkProfilerDriver implements DriverInterface, OutputInterface
 {
+    /**
+     * @param AbstractGroupHandler[] $resolvers
+     */
+    public function __construct(
+        protected array $resolvers = []
+    ) {}
+
     protected array $nameCache = [];
+
+    /**
+     * @var array<string, AbstractGroupHandler>
+     */
+    protected array $activeHandlers = [];
 
     protected function clock(): Clockwork
     {
@@ -21,6 +34,13 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
     public function start($timerId, array $tags = null): void
     {
         if (Service::$enabled) {
+            if (!empty($tags)) {
+                if ($this->tryResolveForDefinedEntity($timerId, $tags)) {
+
+                    return;
+                }
+            }
+
             $name = $this->getName($timerId, $tags);
             /** @var Event $event */
             $event = $this->clock()->event($name, ['data' => $tags]);
@@ -29,9 +49,34 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
         }
     }
 
+    /**
+     * @return bool isResolved
+     */
+    protected function tryResolveForDefinedEntity(string $timerId, array $tags): bool
+    {
+        foreach ($this->resolvers as $resolver) {
+            if ($resolver::canHandle($tags)) {
+                $resolverInstance = new $resolver($timerId, $tags);
+                $this->activeHandlers[$timerId] = $resolverInstance;
+                $resolverInstance->start();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function stop($timerId): void
     {
         if (Service::$enabled) {
+            if (isset($this->activeHandlers[$timerId])) {
+                $this->activeHandlers[$timerId]->stop();
+                unset($this->activeHandlers[$timerId]);
+
+                return;
+            }
+
             $name = $this->getName($timerId);
             $this->clock()->event($name)->end();
 

@@ -2,6 +2,8 @@
 
 Integration of PHP development tool Clockwork for Magento 2.
 
+Currently supports only server-side profiling.
+
 ![Web](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web.png?raw=true)
 
 ## Installation
@@ -12,16 +14,39 @@ Integration of PHP development tool Clockwork for Magento 2.
 composer require inpvlsa/magento2-clockwork --dev
 ```
 
+## Setup
+
+```bash
+php bin/magento module:enable Inpvlsa_Clockwork
+php bin/magento dev:profiler:enable Inpvlsa\\Clockwork\\Model\\Profiler\\ClockworkProfilerDriver
+```
+
+Don't worry about module record in `app/etc/config.php`. 
+It will have no effect on environment where dev packages are not installed.
+
 ## Requirements
 
 - PHP 8.3 or later (I'm working on downgrading minimum PHP version)
 
+## Usage
+
+You can access Clockwork panel in 2 ways:
+1. By adding `/clockwork` to the root URL of your Magento instance.
+2. By using [Clockwork Chrome](https://chromewebstore.google.com/detail/clockwork/dmggabnehkmmfmdffgajcflpdjlnoemp) or [Clockwork Firefox](https://addons.mozilla.org/en-US/firefox/addon/clockwork-dev-tools/) extension (Tab "Clockwork" in browser developer toolbar).
+
 ## Features
 
-- Timeline with:
-    - All profiler events
-    - Database queries
-- Elasticsearch/OpenSearch queries
+Timeline includes:
+- All profiler events:
+  - Routing
+  - Controller dispatch
+  - Layout rendering
+  - Events dispatching
+  - Observers execution
+
+Additional data from page available in tabs:
+- Request data, including Magento-specific data for Http request (`IsSecure`, `PathInfo`, etc.)
+- OpenSearch/ElasticSearch queries/responses
 
 ## More screenshots
 
