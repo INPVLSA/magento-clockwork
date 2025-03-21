@@ -74,7 +74,7 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
 
         if (!isset($this->nameCache[$timerId]) || !$this->nameCache[$timerId]) {
             // Removing `magento->`
-            $name = substr($timerId, 9);
+            $name = preg_replace('/^magento->/', '', $timerId);
             // Replacing profiler separator
             $name = str_replace('->', '/', $name);
 
