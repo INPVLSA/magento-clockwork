@@ -10,14 +10,28 @@ class ElasticsearchDataSource extends DataSource
 {
     protected array $searchData = [];
 
+    protected const string NAME = 'ElasticSearch';
+
     public function resolve(Request $request): Request
     {
         if (!empty($this->searchData)) {
-            $dataTab = $request->userData('ElasticSearch');
+            $dataTab = $request->userData(static::NAME);
 
             foreach ($this->searchData as $search) {
-                $dataTab->table('ElasticSearch Query', [$search['query']]);
-                $dataTab->table('ElasticSearch Result', [$search['result']]);
+                $queryData = [];
+
+                foreach ($search['query'] as $key => $value) {
+                    $queryData[] = ['Key' => $key, 'Value' => $value];
+                }
+
+                $dataTab->table('ElasticSearch Query', $queryData);
+
+                $queryData = [];
+
+                foreach ($search['result'] as $key => $value) {
+                    $queryData[] = ['Key' => $key, 'Value' => $value];
+                }
+                $dataTab->table('ElasticSearch Result', $queryData);
             }
         }
 
