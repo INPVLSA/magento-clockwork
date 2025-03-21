@@ -21,9 +21,6 @@ php bin/magento module:enable Inpvlsa_Clockwork
 php bin/magento dev:profiler:enable Inpvlsa\\Clockwork\\Model\\Profiler\\ClockworkProfilerDriver
 ```
 
-Don't worry about module record in `app/etc/config.php`. 
-It will have no effect on environment where dev packages are not installed.
-
 ## Requirements
 
 - PHP 8.3 or later (I'm working on downgrading minimum PHP version)
