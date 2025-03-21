@@ -26,13 +26,13 @@ php bin/magento module:enable Inpvlsa_Clockwork
 php bin/magento dev:profiler:enable Inpvlsa\\Clockwork\\Model\\Profiler\\ClockworkProfilerDriver
 ```
 
-### 🔑 Authentication
+### Authentication
 
 > Authenticator should allow you to access Clockwork panel on local environment.
 
 > If you still can't access `/clockwork` URL you can add your IP to maintenance mode whitelist.
 
-#### 🔐 [Detailed description of authenticator](_doc/Authentication.md)
+#### [Detailed description of authenticator](_doc/Authentication.md)
 
 ## 🧐 Usage
 
