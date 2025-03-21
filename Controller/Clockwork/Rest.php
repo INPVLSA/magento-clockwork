@@ -4,6 +4,7 @@ namespace Inpvlsa\Clockwork\Controller\Clockwork;
 
 use Clockwork\Storage\Search;
 use Clockwork\Support\Vanilla\Clockwork;
+use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\HttpFactory;
@@ -15,7 +16,8 @@ class Rest implements HttpGetActionInterface
     public function __construct(
         protected RequestInterface $request,
         protected HttpFactory $responseFactory,
-        protected SerializerInterface $serializer
+        protected SerializerInterface $serializer,
+        protected ClockworkAuthenticator $authenticator
     ) {}
 
     public function execute(): ResponseInterface
@@ -25,14 +27,11 @@ class Rest implements HttpGetActionInterface
 
         $clockwork = new Clockwork(['storage_files_path' => BP . '/var/clockwork']);
 
-        // Authentication
-        $authenticator = $clockwork->getClockwork()->authenticator();
-        $authHeader = $this->request->getHeader('X-Clockwork-Auth');
-        $authenticated = $authenticator->check($authHeader);
+        $authenticated = $this->authenticator->attempt([]);
 
         if ($authenticated !== true) {
             $response->setBody(
-                $this->serializer->serialize(['message' => $authenticated, 'requires' => $authenticator->requires()])
+                $this->serializer->serialize(['message' => $authenticated, 'requires' => $this->authenticator->requires()])
             );
             $response->setStatusCode(403);
 

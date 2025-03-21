@@ -5,7 +5,7 @@ namespace Inpvlsa\Clockwork\Controller;
 use Inpvlsa\Clockwork\Controller\Clockwork\Rest;
 use Inpvlsa\Clockwork\Controller\Clockwork\StaticContent;
 use Inpvlsa\Clockwork\Controller\Clockwork\Web;
-use Magento\Framework\App\Action\Forward;
+use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
 use Magento\Framework\App\ActionFactory;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Request\Http;
@@ -15,14 +15,15 @@ use Magento\Framework\App\RouterInterface;
 class Router implements RouterInterface
 {
     public function __construct(
-        protected ActionFactory $actionFactory
+        protected ActionFactory $actionFactory,
+        protected ClockworkAuthenticator $clockworkAuthenticator
     ) {}
 
     public function match(RequestInterface $request): ?ActionInterface
     {
         $result = null;
 
-        if ($request instanceof Http) {
+        if ($request instanceof Http && $this->clockworkAuthenticator->attempt([])) {
             $path = trim($request->getPathInfo(), '/');
 
             if (str_starts_with($path, 'clockwork_static')) {

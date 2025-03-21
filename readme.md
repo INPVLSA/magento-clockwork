@@ -6,9 +6,13 @@ Clockwork: [GitHub](https://github.com/itsgoingd/clockwork) - [Website](https://
 
 ![Web](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web.png?raw=true)
 
+## Requirements
+
+- PHP 8.3 or later (I'm working on downgrading minimum PHP version)
+
 ## Installation
 
-**Important**! Use `--dev` flag to avoid installing Clockwork on live environments. Authentication is not tested yet.
+**Important**! Use `--dev` flag to avoid installing Clockwork on live environments
 
 ```bash
 composer require inpvlsa/magento2-clockwork --dev
@@ -21,9 +25,13 @@ php bin/magento module:enable Inpvlsa_Clockwork
 php bin/magento dev:profiler:enable Inpvlsa\\Clockwork\\Model\\Profiler\\ClockworkProfilerDriver
 ```
 
-## Requirements
+### 🔑 Authentication
 
-- PHP 8.3 or later (I'm working on downgrading minimum PHP version)
+> Authenticator should allow you to access Clockwork panel on local environment.
+
+> If you still can't access `/clockwork` URL you can add your IP to maintenance mode whitelist.
+
+### 🔐 [Detailed description of authenticator](_doc/Authentication.md)
 
 ## Usage
 
@@ -44,6 +52,10 @@ Timeline includes:
 Additional data from page available in tabs:
 - Request data, including Magento-specific data for Http request (`IsSecure`, `PathInfo`, etc.)
 - OpenSearch/ElasticSearch queries/responses
+
+## Next implementation steps
+1. Redis storage
+2. DB storage
 
 ## More screenshots
 

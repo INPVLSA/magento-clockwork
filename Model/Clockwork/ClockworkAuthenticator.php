@@ -1,0 +1,112 @@
+<?php declare(strict_types=1);
+
+namespace Inpvlsa\Clockwork\Model\Clockwork;
+
+use Clockwork\Authentication\AuthenticatorInterface;
+use Magento\Framework\App\MaintenanceMode;
+use Magento\Store\Model\StoreManagerInterface;
+
+class ClockworkAuthenticator implements AuthenticatorInterface
+{
+    private const array ALLOWED_HOSTS = [
+        'host' => [
+            'localhost'
+        ],
+        'host_suffix' => [
+            '.local',
+            '.test',
+            '.wip',
+            '.loc',
+            '.docker'
+        ],
+        'ips_prefix' => [
+            '192.168.',
+            '10.',
+            '172.16',
+            '172.17',
+            '172.18',
+            '172.19',
+            '172.20',
+            '172.21',
+            '172.22',
+            '172.23',
+            '172.24',
+            '172.25',
+            '172.26',
+            '172.27',
+            '172.28',
+            '172.29',
+            '172.30',
+            '172.31',
+            '127.'
+        ]
+    ];
+
+    public function __construct(
+        protected StoreManagerInterface $storeManager,
+        protected MaintenanceMode $maintenanceMode
+    ) {}
+
+    public function attempt(array $credentials): bool
+    {
+        if ($this->isAllowByMagentoUrl() || $this->isAllowByIp()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function isAllowByIp(): bool
+    {
+        $remoteAddress = $_SERVER['REMOTE_ADDR'];
+
+        foreach (self::ALLOWED_HOSTS['host'] as $host) {
+            if ($host === $remoteAddress) {
+                return true;
+            }
+        }
+
+        foreach (self::ALLOWED_HOSTS['ips_prefix'] as $ips_prefix) {
+            if (str_starts_with($remoteAddress, $ips_prefix)) {
+                return true;
+            }
+        }
+
+        if (in_array($remoteAddress, $this->maintenanceMode->getAddressInfo())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function isAllowByMagentoUrl(): bool
+    {
+        $store = $this->storeManager->getStore();
+        $baseUrl = $store->getBaseUrl();
+        $baseUrl = parse_url($baseUrl, PHP_URL_HOST);
+
+        foreach (self::ALLOWED_HOSTS['host'] as $host) {
+            if ($host === $baseUrl) {
+                return true;
+            }
+        }
+
+        foreach (self::ALLOWED_HOSTS['host_suffix'] as $host_suffix) {
+            if (str_ends_with($baseUrl, $host_suffix)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function check($token): bool
+    {
+        return false;
+    }
+
+    public function requires(): array
+    {
+        return [];
+    }
+}
