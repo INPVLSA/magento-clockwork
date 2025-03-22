@@ -6,12 +6,13 @@ use Clockwork\Storage\Search;
 use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
 use Inpvlsa\Clockwork\Model\Clockwork\Service;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpOptionsActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\HttpFactory;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 
-class Rest implements HttpGetActionInterface
+class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
 {
     public function __construct(
         protected RequestInterface $request,
@@ -63,6 +64,10 @@ class Rest implements HttpGetActionInterface
 
         $response = $this->responseFactory->create();
         $response->setBody($this->serializer->serialize($data));
+
+        // Uncomment on Client development
+//        $response->setHeader('Access-Control-Allow-Origin', '*');
+        $response->setHeader('Access-Control-Allow-Headers', 'x-clockwork-auth');
 
         return $response;
     }
