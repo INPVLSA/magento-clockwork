@@ -51,21 +51,23 @@ You can access Clockwork panel in 2 ways:
 
 ## ✨ Features
 
-Timeline includes:
-- All profiler events:
-  - Routing
-  - Controller dispatch
-  - Layout rendering
-  - Events dispatching
-  - Observers execution
+- CSV? No.
+- Maybe open separate page which will contain only last page data? No. You don't need to reload page to see new data
 
-Additional data from page available in tabs:
-- Request data, including Magento-specific data for Http request (`IsSecure`, `PathInfo`, etc.)
-- OpenSearch/ElasticSearch queries/responses
 
-## 🏁 Next implementation steps
-1. Redis storage
-2. DB storage
+- Timeline with filters by type/text
+  - All profiler events. All filterable by types (not all implemented yet, but)
+    - Routing
+    - Controller dispatch
+    - Layout rendering
+    - Events dispatching
+    - Observers execution
+- Collections. With theirs SQL queries and time of loading
+- All database requests executed on page. Sortable, searchable, prettified ✨
+- Request data
+  - Magento-specific data (`IsSecure`, `PathInfo`, etc.)
+  - Http request data
+- All OpenSearch/ElasticSearch queries/responses
 
 ## 🏞️ More screenshots
 
