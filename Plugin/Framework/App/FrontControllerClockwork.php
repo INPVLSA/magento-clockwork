@@ -17,7 +17,7 @@ class FrontControllerClockwork
 
     public function beforeDispatch(FrontController $subject, RequestInterface $request): void
     {
-        $this->clockworkService->initialize($request);
+        $this->clockworkService->initializeForTracking($request);
 
         if ($this->clockworkService->getStatus()) {
             Profiler::add($this->driver);

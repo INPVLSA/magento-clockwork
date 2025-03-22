@@ -3,45 +3,103 @@
 namespace Inpvlsa\Clockwork\Model\Clockwork;
 
 use Clockwork\Support\Vanilla\Clockwork;
+use Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoRequestDataSource;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\DeploymentConfig;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Driver\File;
+use Psr\Log\LoggerInterface;
 
 class Service
 {
     public static bool $enabled = true;
-    protected ?array $requestDetails = null;
 
     public function __construct(
+        protected ClockworkAuthenticator $authenticator,
+        protected ScopeConfigInterface $scopeConfig,
+        protected DeploymentConfig $deploymentConfig,
+        protected LoggerInterface $logger,
+        protected Filesystem\Proxy $filesystem,
+        protected File\Proxy $fileDriver,
         protected array $dataSources = []
     ) {}
 
-    public function initialize(RequestInterface $request): void
+    public function initializeForTracking(RequestInterface $request): void
     {
         $this->validateRequest($request);
 
-        if (!Service::$enabled || !$request instanceof Http) {
+        if (!Service::$enabled || !$request instanceof Http || !$this->authenticator->attempt([])) {
             return;
         }
-        Clockwork::init(['storage_files_path' => BP . '/var/clockwork', 'enable' => true]);
-
-        $authenticator = $this->getInstance()->getClockwork()->authenticator();
-        $authHeader = $request->getHeader('X-Clockwork-Auth');
-        $authenticated = $authenticator->check($authHeader);
-
-        if ($authenticated !== true) {
-
-            return;
-        }
+        $this->initClockwork();
 
         foreach ($this->dataSources as $dataSource) {
             $this->getInstance()->getClockwork()->addDataSource($dataSource);
+
+            if ($dataSource instanceof MagentoRequestDataSource) {
+                $dataSource->earlyRegister($request);
+            }
         }
-        $this->requestDetails = [
-            'PathInfo' => $request->getPathInfo(),
-            'IsSecure' => $request->isSecure(),
-            'RouteName' => $request->getRouteName(),
-            'Method' => $request->getMethod(),
-            'RequestUri' => $request->getRequestUri()
+    }
+
+    public function initClockwork(): void
+    {
+        $defaultConfig = [
+            'storage' => 'files',
+            'storage_files_path' => BP . '/var/clockwork'
+        ];
+
+        try {
+            $config = match($this->scopeConfig->getValue('dev/clockwork/data_storage')) {
+                'redis' => [
+                    'storage' => 'redis',
+                    'storage_redis' => $this->getRedisConfig()
+                ],
+                default => $defaultConfig
+            };
+        } catch (\Throwable) {
+            $config = $defaultConfig;
+        }
+
+        if ($config['storage'] !== 'files' && $config['storage_' . $config['storage']] === null) {
+            $this->logger->warning('Clockwork: Redis configuration is missing, falling back to files storage');
+            $config = $defaultConfig;
+        }
+
+        if ($config['storage'] === 'files') {
+            $this->checkDirExistsOrCreate();
+        }
+        $config['enable'] = true;
+
+        Clockwork::init($config);
+    }
+
+    protected function checkDirExistsOrCreate(): void
+    {
+        $varDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
+        $clockworkPath = $varDirectory->getAbsolutePath('clockwork');
+
+        if (!$this->fileDriver->isDirectory($clockworkPath)) {
+            $varDirectory->create('clockwork');
+        }
+    }
+
+    protected function getRedisConfig(): ?array
+    {
+        $host = $this->deploymentConfig->get('session/redis/host');
+
+        if ($host === null) {
+            return null;
+        }
+
+        return [
+            'host' => $host,
+            'port' => $this->deploymentConfig->get('session/redis/port'),
+            'database' => $this->deploymentConfig->get('session/redis/database'),
+            'pass' => $this->deploymentConfig->get('session/redis/password'),
         ];
     }
 
@@ -70,19 +128,8 @@ class Service
         if (!Service::$enabled) {
             return;
         }
-        $this->collectAdditionalTabsData();
         $this->getInstance()->requestProcessed();
         $this->getInstance()->sendHeaders();
-    }
-
-    protected function collectAdditionalTabsData(): void
-    {
-        $data = [];
-
-        foreach ($this->requestDetails as $key => $value) {
-            $data[] = ['Type' => $key, 'Value' => $value];
-        }
-        Clockwork::instance()->userData('request')->title('Request Details')->table('Request Details', $data);
     }
 
     public function disable(): void

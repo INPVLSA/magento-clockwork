@@ -19,12 +19,21 @@ Integration of PHP development tool Clockwork for Magento 2.
 composer require inpvlsa/magento2-clockwork --dev
 ```
 
-## 🛠️ Setup
+## 🛠️ Setup/Configuration
 
 ```bash
 php bin/magento module:enable Inpvlsa_Clockwork
 php bin/magento dev:profiler:enable Inpvlsa\\Clockwork\\Model\\Profiler\\ClockworkProfilerDriver
 ```
+
+Data storage is set to `file` by default. You can change it in configuration `Stores` -> `Advanced` -> `Developer` -> `Clockwork`
+
+Or using CLI 
+```bash
+php bin/magento config:set dev/clockwork/data_storage file|redis
+```
+
+- Redis storage requires session storage to be set to Redis (It retrieves redis connection data from Magento deployment config).
 
 ### Authentication
 

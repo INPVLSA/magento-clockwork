@@ -30,6 +30,7 @@
                 <item name="db" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDbDataSource</item>
                 <item name="elastic" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\ElasticsearchDataSource</item>
                 <item name="opensearch" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\OpenSearchDataSource</item>
+                <item name="request" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoRequestDataSource</item>
             </argument>
         </arguments>
     </type>

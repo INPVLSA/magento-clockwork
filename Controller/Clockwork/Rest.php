@@ -3,8 +3,8 @@
 namespace Inpvlsa\Clockwork\Controller\Clockwork;
 
 use Clockwork\Storage\Search;
-use Clockwork\Support\Vanilla\Clockwork;
 use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
+use Inpvlsa\Clockwork\Model\Clockwork\Service;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\HttpFactory;
@@ -17,7 +17,8 @@ class Rest implements HttpGetActionInterface
         protected RequestInterface $request,
         protected HttpFactory $responseFactory,
         protected SerializerInterface $serializer,
-        protected ClockworkAuthenticator $authenticator
+        protected ClockworkAuthenticator $authenticator,
+        protected Service $clockworkService
     ) {}
 
     public function execute(): ResponseInterface
@@ -25,7 +26,8 @@ class Rest implements HttpGetActionInterface
         $this->prepareRequest();
         $response = $this->responseFactory->create();
 
-        $clockwork = new Clockwork(['storage_files_path' => BP . '/var/clockwork']);
+        $this->clockworkService->initClockwork();
+        $clockwork = $this->clockworkService->getInstance();
 
         $authenticated = $this->authenticator->attempt([]);
 
@@ -43,7 +45,6 @@ class Rest implements HttpGetActionInterface
         $direction = $this->request->getParam('direction');
         $count = $this->request->getParam('count');
 
-        // TODO:: On file storage check if the file & dir exists (and create)
         $storage = $clockwork->getClockwork()->storage();
 
         if ($direction == 'previous') {
