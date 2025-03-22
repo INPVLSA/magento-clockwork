@@ -6,7 +6,7 @@ use Clockwork\Support\Vanilla\Clockwork;
 
 class Event extends AbstractGroupHandler
 {
-    public static function canHandle(array $tags): bool
+    public static function canHandle(string $timerId, array $tags): bool
     {
         return isset($tags['group']) && $tags['group'] === 'EVENT';
     }

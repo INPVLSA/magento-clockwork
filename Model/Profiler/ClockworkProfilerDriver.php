@@ -55,7 +55,7 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
     protected function tryResolveForDefinedEntity(string $timerId, array $tags): bool
     {
         foreach ($this->resolvers as $resolver) {
-            if ($resolver::canHandle($tags)) {
+            if ($resolver::canHandle($timerId, $tags)) {
                 $resolverInstance = new $resolver($timerId, $tags);
                 $this->activeHandlers[$timerId] = $resolverInstance;
                 $resolverInstance->start();

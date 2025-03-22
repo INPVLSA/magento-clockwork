@@ -20,6 +20,7 @@
         <arguments>
             <argument name="resolvers" xsi:type="array">
                 <item name="event" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Event</item>
+                <item name="observer" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Observer</item>
             </argument>
         </arguments>
     </type>
