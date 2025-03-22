@@ -23,13 +23,4 @@ class FrontControllerClockwork
             Profiler::add($this->driver);
         }
     }
-
-    public function afterDispatch(FrontController $subject, $result)
-    {
-        if ($this->clockworkService->getStatus()) {
-            $this->clockworkService->finish();
-        }
-
-        return $result;
-    }
 }
