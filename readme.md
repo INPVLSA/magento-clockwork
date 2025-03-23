@@ -4,6 +4,27 @@ Development tool for Magento 2 with timeline, database queries, cache, templates
 
 - Clockwork: [GitHub](https://github.com/itsgoingd/clockwork) - [Website](https://underground.works/clockwork/) 
 
+## ✨ Features
+
+> CSV? No. Maybe open a separate page with only the last page's data? No.
+
+
+1. Timeline with filters by type/text
+2. All profiler events. All filterable by types (not all implemented yet, but)
+    1. Routing
+    2. Layout
+    3. Events dispatching (Note: some layout-related events are not logged due to high amount of almost useless data)
+    4. Observers execution
+3. Collections. With SQL queries, load time, classname
+4. All database requests executed on the page. Sortable, searchable, prettified ✨
+5. Templates rendering
+6. Cache load/save with identifiers, data, tags, ttl (last 3 on write)
+7. Request data
+    1. Magento-specific data (`IsSecure`, `PathInfo`, etc.)
+    2. Http request data
+8. All OpenSearch/ElasticSearch queries/responses
+9. Supports AJAX (and all Http in frontend area)
+
 ![Web](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web.png?raw=true)
 
 ## 📝 Requirements
@@ -55,27 +76,6 @@ php bin/magento config:set dev/clockwork/data_storage file|redis
 You can access Clockwork panel in 2 ways:
 1. By adding `/clockwork` to the root URL of your Magento instance.
 2. By using [Clockwork Chrome](https://chromewebstore.google.com/detail/clockwork/dmggabnehkmmfmdffgajcflpdjlnoemp) or [Clockwork Firefox](https://addons.mozilla.org/en-US/firefox/addon/clockwork-dev-tools/) extension (Tab "Clockwork" in browser developer toolbar).
-
-## ✨ Features
-
-> CSV? No. Maybe open a separate page with only the last page's data? No.
-
-
-1. Timeline with filters by type/text
-2. All profiler events. All filterable by types (not all implemented yet, but)
-   1. Routing
-   2. Layout
-   3. Events dispatching (Note: some layout-related events are not logged due to high amount of almost useless data)
-   4. Observers execution
-3. Collections. With SQL queries, load time, classname
-4. All database requests executed on the page. Sortable, searchable, prettified ✨
-5. Templates rendering
-6. Cache load/save with identifiers, data, tags, ttl (last 3 on write)
-7. Request data
-   1. Magento-specific data (`IsSecure`, `PathInfo`, etc.)
-   2. Http request data
-8. All OpenSearch/ElasticSearch queries/responses
-9. Supports AJAX (and all Http in frontend area)
 
 ## 🏞️ More screenshots
 
