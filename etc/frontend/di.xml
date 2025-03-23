@@ -51,10 +51,8 @@
         </arguments>
     </type>
 
-    <!-- TODO:: REMOVE ? Start   -->
     <type name="Symfony\Component\HttpKernel\Profiler\Profiler">
         <arguments>
-            <!-- TODO:: Other storages -->
             <argument name="storage" xsi:type="object">Symfony\Component\HttpKernel\Profiler\FileProfilerStorage</argument>
         </arguments>
     </type>
@@ -64,7 +62,6 @@
             <argument name="dsn" xsi:type="string">file:var/clockwork/file_storage</argument>
         </arguments>
     </type>
-    <!-- TODO:: REMOVE ? End   -->
 
     <type name="Clockwork\Storage\FileStorage">
         <arguments>

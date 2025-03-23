@@ -2,7 +2,6 @@
 
 namespace Inpvlsa\Clockwork\Controller\Clockwork;
 
-use Clockwork\Support\Symfony\ClockworkSupport;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Response\Http;
 use Magento\Framework\App\Response\HttpFactory;
@@ -13,14 +12,12 @@ use Psr\Log\LoggerInterface;
 
 class Web implements HttpGetActionInterface
 {
-    protected ClockworkSupport $clockworkSupport;
     protected HttpFactory $responseFactory;
     protected Repository $assetRepository;
     protected LoggerInterface $logger;
     protected File $fileDriver;
 
     public function __construct(
-        ClockworkSupport $clockworkSupport,
         HttpFactory $responseFactory,
         Repository $assetRepository,
         LoggerInterface $logger,
@@ -30,7 +27,6 @@ class Web implements HttpGetActionInterface
         $this->logger = $logger;
         $this->assetRepository = $assetRepository;
         $this->responseFactory = $responseFactory;
-        $this->clockworkSupport = $clockworkSupport;
     }
 
     /**
