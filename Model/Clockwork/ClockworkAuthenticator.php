@@ -60,10 +60,8 @@ class ClockworkAuthenticator implements AuthenticatorInterface
     {
         $remoteAddress = $_SERVER['REMOTE_ADDR'];
 
-        foreach (self::ALLOWED_HOSTS['host'] as $host) {
-            if ($host === $remoteAddress) {
-                return true;
-            }
+        if (in_array($remoteAddress, self::ALLOWED_HOSTS['host'], true)) {
+            return true;
         }
 
         foreach (self::ALLOWED_HOSTS['ips_prefix'] as $ips_prefix) {
@@ -85,10 +83,8 @@ class ClockworkAuthenticator implements AuthenticatorInterface
         $baseUrl = $store->getBaseUrl();
         $baseUrl = parse_url($baseUrl, PHP_URL_HOST);
 
-        foreach (self::ALLOWED_HOSTS['host'] as $host) {
-            if ($host === $baseUrl) {
-                return true;
-            }
+        if (in_array($baseUrl, self::ALLOWED_HOSTS['host'], true)) {
+            return true;
         }
 
         foreach (self::ALLOWED_HOSTS['host_suffix'] as $host_suffix) {
