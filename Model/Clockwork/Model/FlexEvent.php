@@ -14,7 +14,6 @@ class FlexEvent extends DataObject
     public float $start = 0;
     public float $end = 0;
     public string $description = '';
-//    public float $duration = 0;
 
     public function __construct(array $data = [])
     {
@@ -24,7 +23,11 @@ class FlexEvent extends DataObject
         $this->start = $data['start'] ?? 0;
         $this->end = $data['end'] ?? 0;
         $this->description = $data['name'] ?? '';
-//        $this->duration = $data['end'] - $data['start'] ?? 0;
+    }
+
+    public function setTags(array $tags): void
+    {
+        $this->_data['data']['tags'] = $tags;
     }
 
     public static function fromEvent(Event $event): self

@@ -25,6 +25,7 @@ class Template extends AbstractGroupHandler
         $this->data['end'] = microtime(true);
         $event = FlexEvent::fromEvent(new ClockworkEvent($this->data['file'], $this->data));
         $event->setData('tags', $this->data['data']['tags']);
+        $event->setData('color', 'pinkp');
 
         Clockwork::instance()->request()->timeline()->events[] = $event;
     }

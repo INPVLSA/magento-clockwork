@@ -23,6 +23,10 @@
                 <item name="observer" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Observer</item>
                 <item name="template" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Template</item>
                 <item name="cache" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Cache</item>
+                <item name="layout" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Layout</item>
+                <item name="layout_class" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\LayoutClass</item>
+                <item name="layout_update" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\LayoutUpdate</item>
+                <item name="eav_ignore" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\EavIgnore</item>
             </argument>
         </arguments>
     </type>
