@@ -16,7 +16,7 @@
     }],
     "require": {
         "php": "^7.4||^8.1||^8.2||^8.3||^8.4",
-        "magento/framework": "102.0.*||103.0.*"
+        "magento/framework": "^101.0.0 || ^102.0.0 || ^103.0.0"
     },
     "require-dev": {
         "itsgoingd/clockwork": "^5.3"
