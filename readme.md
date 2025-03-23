@@ -1,6 +1,6 @@
 # ⚙️ Clockwork integration for Magento 2
 
-Integration of PHP development tool Clockwork for Magento 2.
+Development tool for Magento 2 with timeline, database queries, cache, templates, and more. Built on Clockwork.
 
 - Clockwork: [GitHub](https://github.com/itsgoingd/clockwork) - [Website](https://underground.works/clockwork/) 
 
@@ -72,7 +72,11 @@ You can access Clockwork panel in 2 ways:
 
 ## 🏞️ More screenshots
 
+![Web1](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web.png?raw=true)
 ![Web2](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web2.png?raw=true)
+![Collection](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Collection.png?raw=true)
 ![Db](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Db.png?raw=true)
+![Cache](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Cache.png?raw=true)
+![Events](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Events.png?raw=true)
 ![Request](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Request.png?raw=true)
 ![OpenSearch](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/OpenSearch.png?raw=true)
