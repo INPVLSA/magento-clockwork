@@ -33,10 +33,8 @@ class Web implements HttpGetActionInterface
     protected function prepareHtml(string $html): string
     {
         $assetUrl = $this->assetRepository->getUrl('Inpvlsa_Clockwork::clockwork-app/assets');
-
         $html = str_replace('src="assets', 'src="' . $assetUrl, $html);
-        $html = str_replace('href="assets', 'href="' . $assetUrl, $html);
 
-        return str_replace('href="img', 'href="clockwork_static/img', $html);
+        return str_replace('href="assets', 'href="' . $assetUrl, $html);
     }
 }

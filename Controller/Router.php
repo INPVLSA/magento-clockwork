@@ -26,9 +26,7 @@ class Router implements RouterInterface
         if ($request instanceof Http && $this->clockworkAuthenticator->attempt([])) {
             $path = trim($request->getPathInfo(), '/');
 
-            if (str_starts_with($path, 'clockwork_static')) {
-                $result = $this->actionFactory->create(StaticContent::class);
-            } elseif (str_starts_with($path, 'clockwork')) {
+            if (str_starts_with($path, 'clockwork')) {
                 $result = $this->actionFactory->create(Web::class);
             } elseif (str_starts_with($path, '__clockwork')) {
                 $result = $this->actionFactory->create(Rest::class);
