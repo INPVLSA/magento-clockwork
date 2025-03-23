@@ -5,6 +5,7 @@ namespace Inpvlsa\Clockwork\Model\Clockwork\DataSource\Magento;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\AbstractMiddleware;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Magento\Framework\Data\Collection;
+use Magento\Framework\Data\Collection\AbstractDb;
 
 class CollectionMiddleware extends AbstractMiddleware
 {
@@ -16,20 +17,27 @@ class CollectionMiddleware extends AbstractMiddleware
         $data = [
             'start' => $startTime,
             'end' => microtime(true),
-            'sql' => $collection->getSelect()->__toString(),
             'collection_class' => get_class($collection),
             'getPageSize' => $collection->getPageSize(),
-            'getSize' => $collection->getSize()
         ];
 
+        // This check in necessary, might cause infinite Interception loop
+        if ($collection->isLoaded()) {
+            $data['getSize'] = $collection->getSize();
+        }
+
+        if ($collection instanceof AbstractDb) {
+            $data['sql'] = $collection->getSelect()->__toString();
+        }
+
         if ($collection instanceof AbstractCollection) {
-            $data['entity'] = $collection->getEntity()
-                ? $collection->getEntity()->getEntityType()->getEntityTypeCode()
-                : get_class($collection);
+            try {
+                $data['entity'] = $collection->getEntity()->getEntityType()->getEntityTypeCode();
+            } catch (\Exception) {
+                // skip
+            }
             $data['getLoadedIds'] = $collection->getLoadedIds();
-            $data['count(loaded)'] = count($collection->getLoadedIds());
-        } else {
-            $data['entity'] = get_class($collection);
+            $data['count(getLoadedIds)'] = count($collection->getLoadedIds());
         }
 
         ($this->onQuery)($data);
