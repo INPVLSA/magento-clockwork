@@ -9,11 +9,11 @@
     "license": [
         "MIT"
     ],
-    "author": {
+    "authors": [{
         "name": "Uladzislau Marudzenka",
         "email": "vl.marudenko@gmail.com",
-        "url": "https://www.linkedin.com/in/inpvlsa/"
-    },
+        "homepage": "https://www.linkedin.com/in/inpvlsa/"
+    }],
     "require": {
         "php": "^7.4||^8.1||^8.2||^8.3||^8.4",
         "magento/framework": "102.0.*",
