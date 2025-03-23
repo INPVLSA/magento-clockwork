@@ -52,20 +52,19 @@ You can access Clockwork panel in 2 ways:
 ## ✨ Features
 
 - CSV? No.
-- Maybe open separate page which will contain only last page data? No. You don't need to reload page to see new data
+- Maybe open separate page with only last page data? No.
 
 
 - Timeline with filters by type/text
   - All profiler events. All filterable by types (not all implemented yet, but)
     - Routing
-    - Controller dispatch
-    - Layout rendering
-    - Events dispatching
+    - Layout
+    - Events dispatching (Note: some layout-related events are not logged due to high amount of almost useless data)
     - Observers execution
-- Collections. With theirs SQL queries and time of loading
+- Collections. With SQL queries, load time, classname
 - All database requests executed on page. Sortable, searchable, prettified ✨
 - Templates rendering
-- Cache load/save
+- Cache load/save with identifiers, data, tags, ttl (last 3 on write)
 - Request data
   - Magento-specific data (`IsSecure`, `PathInfo`, etc.)
   - Http request data
