@@ -7,6 +7,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\FileFactory;
 use Magento\Framework\App\ResponseFactory;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\View\Asset\Repository;
 
 class StaticContent implements HttpGetActionInterface
 {
@@ -14,22 +15,30 @@ class StaticContent implements HttpGetActionInterface
         protected RequestInterface $request,
         protected ResponseFactory $responseFactory,
         protected FileFactory $fileFactory,
-        protected string $packagePath = BP . '/vendor/itsgoingd/clockwork/Clockwork/Web/public/'
+        protected Repository $assetRepository
     ) {}
 
     public function execute(): ResponseInterface
     {
+        $response = $this->responseFactory->create();
+
         $path = $this->request->getPathInfo();
         $path = str_replace('clockwork_static/', '', $path);
         $path = trim($path, '/');
 
-        $file = $this->packagePath . $path;
+        $filename = basename($path);
 
-        if (!file_exists($file)) {
+        $url = $this->assetRepository->getUrl('Inpvlsa_Clockwork::clockwork-app/assets');
 
-            return $this->responseFactory->create()->setHttpResponseCode(404);
-        }
+//        $file = $this->packagePath . $path;
 
-        return $this->fileFactory->create(['options' => ['filePath' => $file]]);
+//        if (!file_exists($file)) {
+//
+//            return $this->responseFactory->create()->setHttpResponseCode(404);
+//        }
+
+//        return $this->fileFactory->create(['options' => ['filePath' => $file]]);
+
+        return $response;
     }
 }

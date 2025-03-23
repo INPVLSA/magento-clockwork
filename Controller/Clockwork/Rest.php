@@ -66,7 +66,7 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
         $response->setBody($this->serializer->serialize($data));
 
         // Uncomment on Client development
-//        $response->setHeader('Access-Control-Allow-Origin', '*');
+        $response->setHeader('Access-Control-Allow-Origin', '*');
         $response->setHeader('Access-Control-Allow-Headers', 'x-clockwork-auth');
 
         return $response;
