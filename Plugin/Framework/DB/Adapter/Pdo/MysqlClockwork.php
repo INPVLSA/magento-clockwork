@@ -7,9 +7,13 @@ use Magento\Framework\DB\Adapter\Pdo\Mysql;
 
 class MysqlClockwork
 {
+    protected ZendDbDataSource $driver;
+
     public function __construct(
-        protected ZendDbDataSource $driver
-    ) {}
+        ZendDbDataSource $driver
+    ) {
+        $this->driver = $driver;
+    }
 
     public function aroundQuery(Mysql $subject, callable $proceed, $sql, $bind = [])
     {

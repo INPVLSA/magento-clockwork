@@ -3,29 +3,49 @@
 namespace Inpvlsa\Clockwork\Controller\Clockwork;
 
 use Clockwork\Storage\Search;
-use Clockwork\Support\Vanilla\Clockwork;
+use Clockwork\Storage\Storage;
 use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
+use Inpvlsa\Clockwork\Model\Clockwork\Service;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpOptionsActionInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\HttpFactory;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 
-class Rest implements HttpGetActionInterface
+class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
 {
+    /**
+     * @var Http
+     */
+    protected RequestInterface $request;
+    protected HttpFactory $responseFactory;
+    protected SerializerInterface $serializer;
+    protected ClockworkAuthenticator $authenticator;
+    protected Service $clockworkService;
+
     public function __construct(
-        protected RequestInterface $request,
-        protected HttpFactory $responseFactory,
-        protected SerializerInterface $serializer,
-        protected ClockworkAuthenticator $authenticator
-    ) {}
+        RequestInterface $request,
+        HttpFactory $responseFactory,
+        SerializerInterface $serializer,
+        ClockworkAuthenticator $authenticator,
+        Service $clockworkService
+    ) {
+        $this->clockworkService = $clockworkService;
+        $this->authenticator = $authenticator;
+        $this->serializer = $serializer;
+        $this->responseFactory = $responseFactory;
+        $this->request = $request;
+    }
 
     public function execute(): ResponseInterface
     {
         $this->prepareRequest();
         $response = $this->responseFactory->create();
 
-        $clockwork = new Clockwork(['storage_files_path' => BP . '/var/clockwork']);
+        $this->clockworkService->initClockwork();
+        $clockwork = $this->clockworkService->getInstance();
 
         $authenticated = $this->authenticator->attempt([]);
 
@@ -43,7 +63,7 @@ class Rest implements HttpGetActionInterface
         $direction = $this->request->getParam('direction');
         $count = $this->request->getParam('count');
 
-        // TODO:: On file storage check if the file & dir exists (and create)
+        /** @var Storage $storage */
         $storage = $clockwork->getClockwork()->storage();
 
         if ($direction == 'previous') {
@@ -63,12 +83,15 @@ class Rest implements HttpGetActionInterface
         $response = $this->responseFactory->create();
         $response->setBody($this->serializer->serialize($data));
 
+        // Uncomment on Client App development
+        // $response->setHeader('Access-Control-Allow-Origin', '*');
+        $response->setHeader('Access-Control-Allow-Headers', 'x-clockwork-auth');
+
         return $response;
     }
 
     protected function prepareRequest(): void
     {
-        /** @param $this->request */
         $path = $this->request->getPathInfo();
         $path = trim($path, '/');
 

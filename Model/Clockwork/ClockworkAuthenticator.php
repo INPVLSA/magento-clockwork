@@ -8,7 +8,7 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class ClockworkAuthenticator implements AuthenticatorInterface
 {
-    private const array ALLOWED_HOSTS = [
+    private const ALLOWED_HOSTS = [
         'host' => [
             'localhost'
         ],
@@ -41,11 +41,16 @@ class ClockworkAuthenticator implements AuthenticatorInterface
             '127.'
         ]
     ];
+    protected StoreManagerInterface $storeManager;
+    protected MaintenanceMode $maintenanceMode;
 
     public function __construct(
-        protected StoreManagerInterface $storeManager,
-        protected MaintenanceMode $maintenanceMode
-    ) {}
+        StoreManagerInterface $storeManager,
+        MaintenanceMode $maintenanceMode
+    ) {
+        $this->maintenanceMode = $maintenanceMode;
+        $this->storeManager = $storeManager;
+    }
 
     public function attempt(array $credentials): bool
     {
@@ -60,10 +65,8 @@ class ClockworkAuthenticator implements AuthenticatorInterface
     {
         $remoteAddress = $_SERVER['REMOTE_ADDR'];
 
-        foreach (self::ALLOWED_HOSTS['host'] as $host) {
-            if ($host === $remoteAddress) {
-                return true;
-            }
+        if (in_array($remoteAddress, self::ALLOWED_HOSTS['host'], true)) {
+            return true;
         }
 
         foreach (self::ALLOWED_HOSTS['ips_prefix'] as $ips_prefix) {
@@ -85,10 +88,8 @@ class ClockworkAuthenticator implements AuthenticatorInterface
         $baseUrl = $store->getBaseUrl();
         $baseUrl = parse_url($baseUrl, PHP_URL_HOST);
 
-        foreach (self::ALLOWED_HOSTS['host'] as $host) {
-            if ($host === $baseUrl) {
-                return true;
-            }
+        if (in_array($baseUrl, self::ALLOWED_HOSTS['host'], true)) {
+            return true;
         }
 
         foreach (self::ALLOWED_HOSTS['host_suffix'] as $host_suffix) {

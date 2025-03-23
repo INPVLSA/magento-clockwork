@@ -17,7 +17,7 @@ abstract class AbstractGroupHandler
         $this->data = ['tags' => $tags, 'data' => []];
     }
 
-    abstract public static function canHandle(array $tags): bool;
+    abstract public static function canHandle(string $timerId, array $tags): bool;
 
     public function start(): void
     {
