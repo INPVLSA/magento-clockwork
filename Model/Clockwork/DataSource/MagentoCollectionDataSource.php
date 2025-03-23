@@ -4,8 +4,10 @@ namespace Inpvlsa\Clockwork\Model\Clockwork\DataSource;
 
 use Clockwork\DataSource\DataSource;
 use Clockwork\Request\Request;
+use Clockwork\Request\Timeline\Event;
 use Clockwork\Support\Vanilla\Clockwork;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\Magento\CollectionMiddleware;
+use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
 
 class MagentoCollectionDataSource extends DataSource
 {
@@ -16,10 +18,12 @@ class MagentoCollectionDataSource extends DataSource
         foreach ($this->data as $item) {
             $eventData = [
                 'start' => $item['start'],
-                'end' => $item['end']
+                'end' => $item['end'],
             ];
+            $event = FlexEvent::fromEvent(new Event($item['name'], $eventData));
+            $event->setData('data', ['tags' => ['collection']]);
 
-            Clockwork::instance()->getClockwork()->event($item['name'], $eventData);
+            $request->timeline()->events[] = $event;
 
             $tableData = [];
 
