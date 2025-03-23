@@ -1,11 +1,19 @@
 {
     "name": "inpvlsa/magento-clockwork",
-    "description": "Clockwork developer tool adapter for Magento 2",
+    "description": "Development tool for Magento 2 with timeline, database queries, cache, templates, and more. Built on Clockwork.",
     "type": "magento2-module",
     "config": {
         "sort-packages": true
     },
     "version": "1.0.0",
+    "license": [
+        "MIT"
+    ],
+    "author": {
+        "name": "Uladzislau Marudzenka",
+        "email": "vl.marudenko@gmail.com",
+        "url": "https://www.linkedin.com/in/inpvlsa/"
+    },
     "require": {
         "php": "^7.4||^8.1||^8.2||^8.3||^8.4",
         "magento/framework": "102.0.*",
