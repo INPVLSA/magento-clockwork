@@ -29,8 +29,8 @@ Development tool for Magento 2 with timeline, database queries, cache, templates
 
 ## 📝 Requirements
 
-- PHP 7.4 or later (I'm working on downgrading minimum PHP version)
-- Community Magento 2 with similar PHP version requirements (tested only on Community, planned to test on Enterprise)
+- **PHP 7.4** or later
+- **Community Magento 2** with similar PHP version requirements (tested only on Community, not tested with Enterprise yet)
 
 > Minimal tested Magento version is 2.4.3 
 > Tested on:
