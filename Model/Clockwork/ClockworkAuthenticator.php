@@ -8,7 +8,7 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class ClockworkAuthenticator implements AuthenticatorInterface
 {
-    private const array ALLOWED_HOSTS = [
+    private const ALLOWED_HOSTS = [
         'host' => [
             'localhost'
         ],

@@ -4,5 +4,5 @@ namespace Inpvlsa\Clockwork\Model\Profiler\GroupHandler;
 
 class LayoutUpdate extends Layout
 {
-    protected const string REGEX = '/.*CONTROLLER_ACTION:([\w_]*).*layout_package_update:(..*)$/';
+    protected const REGEX = '/.*CONTROLLER_ACTION:([\w_]*).*layout_package_update:(..*)$/';
 }

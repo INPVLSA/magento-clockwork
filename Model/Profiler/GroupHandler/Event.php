@@ -6,7 +6,7 @@ use Clockwork\Support\Vanilla\Clockwork;
 
 class Event extends AbstractGroupHandler
 {
-    protected const array EVENT_IGNORE_LIST = [
+    protected const EVENT_IGNORE_LIST = [
         'core_layout_block_create_after',
         'view_block_abstract_to_html_after',
         'core_layout_render_element',

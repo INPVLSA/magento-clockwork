@@ -4,7 +4,7 @@ namespace Inpvlsa\Clockwork\Model\Profiler\GroupHandler;
 
 class EavIgnore extends AbstractSkipGroupHandler
 {
-    protected const string REGEX = '/.*[(EAV)(REWRITE)]:(.*)$/';
+    protected const REGEX = '/.*[(EAV)(REWRITE)]:(.*)$/';
 
     public static function canHandle(string $timerId, array $tags): bool
     {

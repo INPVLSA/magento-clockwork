@@ -8,7 +8,7 @@ use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
 
 class Layout extends AbstractGroupHandler
 {
-    protected const string REGEX = '/.*CONTROLLER_ACTION:([\w_]*).*View\\\\Layout(::generateElements.*)$/';
+    protected const REGEX = '/.*CONTROLLER_ACTION:([\w_]*).*View\\\\Layout(::generateElements.*)$/';
 
     public static function canHandle(string $timerId, array $tags): bool
     {

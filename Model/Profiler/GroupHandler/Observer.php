@@ -8,7 +8,7 @@ use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
 
 class Observer extends AbstractGroupHandler
 {
-    protected const string REGEX = '/.*->OBSERVER:(.*?)$/';
+    protected const REGEX = '/.*->OBSERVER:(.*?)$/';
 
     public static function canHandle(string $timerId, array $tags): bool
     {
