@@ -3,7 +3,6 @@
 namespace Inpvlsa\Clockwork\Controller;
 
 use Inpvlsa\Clockwork\Controller\Clockwork\Rest;
-use Inpvlsa\Clockwork\Controller\Clockwork\StaticContent;
 use Inpvlsa\Clockwork\Controller\Clockwork\Web;
 use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
 use Magento\Framework\App\ActionFactory;

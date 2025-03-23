@@ -3,10 +3,12 @@
 namespace Inpvlsa\Clockwork\Controller\Clockwork;
 
 use Clockwork\Storage\Search;
+use Clockwork\Storage\Storage;
 use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
 use Inpvlsa\Clockwork\Model\Clockwork\Service;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\HttpOptionsActionInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\HttpFactory;
 use Magento\Framework\App\ResponseInterface;
@@ -14,6 +16,13 @@ use Magento\Framework\Serialize\SerializerInterface;
 
 class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
 {
+    /**
+     * @param Http $request
+     * @param HttpFactory $responseFactory
+     * @param SerializerInterface $serializer
+     * @param ClockworkAuthenticator $authenticator
+     * @param Service $clockworkService
+     */
     public function __construct(
         protected RequestInterface $request,
         protected HttpFactory $responseFactory,
@@ -46,6 +55,7 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
         $direction = $this->request->getParam('direction');
         $count = $this->request->getParam('count');
 
+        /** @var Storage $storage */
         $storage = $clockwork->getClockwork()->storage();
 
         if ($direction == 'previous') {
@@ -65,8 +75,8 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
         $response = $this->responseFactory->create();
         $response->setBody($this->serializer->serialize($data));
 
-        // Uncomment on Client development
-        $response->setHeader('Access-Control-Allow-Origin', '*');
+        // Uncomment on Client App development
+        // $response->setHeader('Access-Control-Allow-Origin', '*');
         $response->setHeader('Access-Control-Allow-Headers', 'x-clockwork-auth');
 
         return $response;
@@ -74,7 +84,6 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
 
     protected function prepareRequest(): void
     {
-        /** @param $this->request */
         $path = $this->request->getPathInfo();
         $path = trim($path, '/');
 

@@ -2,22 +2,12 @@
 
 namespace Inpvlsa\Clockwork\Model\Clockwork\DataSource\Magento;
 
+use Inpvlsa\Clockwork\Model\Clockwork\DataSource\AbstractMiddleware;
 use Magento\Eav\Model\Entity\Collection\AbstractCollection;
 use Magento\Framework\Data\Collection;
 
-class CollectionMiddleware
+class CollectionMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var callable
-     */
-    private $onQuery;
-
-    public function __construct(
-        callable $onQuery
-    ) {
-        $this->onQuery = $onQuery;
-    }
-
     public function process(Collection $collection, callable $wrappedFn, $printQuery = false, $logQuery = false)
     {
         $startTime = microtime(true);

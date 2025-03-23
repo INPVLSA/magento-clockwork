@@ -5,7 +5,6 @@ namespace Inpvlsa\Clockwork\Model\Clockwork\DataSource;
 use Clockwork\DataSource\DataSource;
 use Clockwork\Request\Request;
 use Clockwork\Request\Timeline\Event;
-use Clockwork\Support\Vanilla\Clockwork;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\Magento\CollectionMiddleware;
 use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
 
