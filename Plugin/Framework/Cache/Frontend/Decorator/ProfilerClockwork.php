@@ -4,7 +4,6 @@ namespace Inpvlsa\Clockwork\Plugin\Framework\Cache\Frontend\Decorator;
 
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\CacheDataSource;
 use Magento\Framework\App\CacheInterface;
-use Magento\Framework\Cache\Frontend\Decorator\Profiler;
 
 class ProfilerClockwork
 {

@@ -12,8 +12,6 @@ class Observer extends AbstractGroupHandler
 
     public static function canHandle(string $timerId, array $tags): bool
     {
-        $a = preg_match(static::REGEX, $timerId);
-
         return preg_match(static::REGEX, $timerId) > 0;
     }
 
