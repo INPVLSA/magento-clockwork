@@ -49,8 +49,7 @@ class MagentoCollectionDataSource extends DataSource
 
     protected function registerLoad(array $data): void
     {
-        $data['name'] = 'CollectionLoad: ' . $data['entity'] . ' (UID: ' . uniqid() . ')';
-
+        $data['name'] = ($data['entity'] ?? $data['collection_class']) . ' (UID: ' . uniqid() . ')';
         $this->data[] = $data;
     }
 }
