@@ -21,6 +21,8 @@
             <argument name="resolvers" xsi:type="array">
                 <item name="event" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Event</item>
                 <item name="observer" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Observer</item>
+                <item name="template" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Template</item>
+                <item name="cache" xsi:type="string">Inpvlsa\Clockwork\Model\Profiler\GroupHandler\Cache</item>
             </argument>
         </arguments>
     </type>
@@ -33,6 +35,7 @@
                 <item name="opensearch" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\OpenSearchDataSource</item>
                 <item name="request" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoRequestDataSource</item>
                 <item name="collection" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoCollectionDataSource</item>
+                <item name="cache" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\CacheDataSource</item>
             </argument>
         </arguments>
     </type>
@@ -88,5 +91,10 @@
     <type name="Magento\Framework\Data\Collection">
         <plugin name="Inpvlsa_Clockwork::eavEntityCollectionClockwork"
                 type="Inpvlsa\Clockwork\Plugin\Eav\Model\Entity\Collection\AbstractCollectionClockwork"/>
+    </type>
+
+    <type name="Magento\Framework\App\CacheInterface">
+        <plugin name="Inpvlsa_Clockwork::cacheFrontendDecoratorProfilerClockwork"
+                type="Inpvlsa\Clockwork\Plugin\Framework\Cache\Frontend\Decorator\ProfilerClockwork"/>
     </type>
 </config>

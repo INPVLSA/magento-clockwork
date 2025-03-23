@@ -2,16 +2,18 @@
 
 namespace Inpvlsa\Clockwork\Model\Profiler\GroupHandler;
 
-use Clockwork\Request\Request;
+use Clockwork\Request\Timeline\Event as ClockworkEvent;
 use Clockwork\Support\Vanilla\Clockwork;
 use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
 
 class Observer extends AbstractGroupHandler
 {
-    protected const REGEX = '/.*->OBSERVER:(.*?)[$-]/';
+    protected const string REGEX = '/.*->OBSERVER:(.*?)$/';
 
     public static function canHandle(string $timerId, array $tags): bool
     {
+        $a = preg_match(static::REGEX, $timerId);
+
         return preg_match(static::REGEX, $timerId) > 0;
     }
 
@@ -34,7 +36,7 @@ class Observer extends AbstractGroupHandler
 
         $this->data['end'] = microtime(true);
 
-        $timelineEvent = new \Clockwork\Request\Timeline\Event('observer:' . $this->data['data']['name'], $this->data);
+        $timelineEvent = new ClockworkEvent($this->data['data']['name'], $this->data);
         $event = FlexEvent::fromEvent($timelineEvent);
         $event->setData('tags', $this->data['data']['tags']);
 

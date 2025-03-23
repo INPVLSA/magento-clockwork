@@ -64,6 +64,8 @@ You can access Clockwork panel in 2 ways:
     - Observers execution
 - Collections. With theirs SQL queries and time of loading
 - All database requests executed on page. Sortable, searchable, prettified ✨
+- Templates rendering
+- Cache load/save
 - Request data
   - Magento-specific data (`IsSecure`, `PathInfo`, etc.)
   - Http request data
