@@ -6,9 +6,13 @@ use Inpvlsa\Clockwork\Model\Clockwork\DataSource\ElasticsearchDataSource;
 
 class ElasticsearchClockwork
 {
+    protected ElasticsearchDataSource $dataSource;
+
     public function __construct(
-        protected ElasticsearchDataSource $dataSource
-    ) {}
+        ElasticsearchDataSource $dataSource
+    ) {
+        $this->dataSource = $dataSource;
+    }
 
     public function aroundQuery(
         $subject,

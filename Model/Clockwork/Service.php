@@ -16,16 +16,31 @@ use Psr\Log\LoggerInterface;
 class Service
 {
     public static bool $enabled = true;
+    protected ClockworkAuthenticator $authenticator;
+    protected ScopeConfigInterface $scopeConfig;
+    protected DeploymentConfig $deploymentConfig;
+    protected LoggerInterface $logger;
+    protected Filesystem\Proxy $filesystem;
+    protected File\Proxy $fileDriver;
+    protected array $dataSources = [];
 
     public function __construct(
-        protected ClockworkAuthenticator $authenticator,
-        protected ScopeConfigInterface $scopeConfig,
-        protected DeploymentConfig $deploymentConfig,
-        protected LoggerInterface $logger,
-        protected Filesystem\Proxy $filesystem,
-        protected File\Proxy $fileDriver,
-        protected array $dataSources = []
-    ) {}
+        ClockworkAuthenticator $authenticator,
+        ScopeConfigInterface $scopeConfig,
+        DeploymentConfig $deploymentConfig,
+        LoggerInterface $logger,
+        Filesystem\Proxy $filesystem,
+        File\Proxy $fileDriver,
+        array $dataSources = []
+    ) {
+        $this->dataSources = $dataSources;
+        $this->fileDriver = $fileDriver;
+        $this->filesystem = $filesystem;
+        $this->logger = $logger;
+        $this->deploymentConfig = $deploymentConfig;
+        $this->scopeConfig = $scopeConfig;
+        $this->authenticator = $authenticator;
+    }
 
     public function initializeForTracking(RequestInterface $request): void
     {
@@ -53,14 +68,17 @@ class Service
         ];
 
         try {
-            $config = match($this->scopeConfig->getValue('dev/clockwork/data_storage')) {
-                'redis' => [
+            $storageConfigValue = $this->scopeConfig->getValue('dev/clockwork/data_storage');
+
+            if ($storageConfigValue === 'redis') {
+                $config = [
                     'storage' => 'redis',
                     'storage_redis' => $this->getRedisConfig()
-                ],
-                default => $defaultConfig
-            };
-        } catch (\Throwable) {
+                ];
+            } else {
+                $config = $defaultConfig;
+            }
+        } catch (\Throwable $e) {
             $config = $defaultConfig;
         }
 

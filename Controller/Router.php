@@ -13,10 +13,16 @@ use Magento\Framework\App\RouterInterface;
 
 class Router implements RouterInterface
 {
+    protected ActionFactory $actionFactory;
+    protected ClockworkAuthenticator $clockworkAuthenticator;
+
     public function __construct(
-        protected ActionFactory $actionFactory,
-        protected ClockworkAuthenticator $clockworkAuthenticator
-    ) {}
+        ActionFactory $actionFactory,
+        ClockworkAuthenticator $clockworkAuthenticator
+    ) {
+        $this->clockworkAuthenticator = $clockworkAuthenticator;
+        $this->actionFactory = $actionFactory;
+    }
 
     public function match(RequestInterface $request): ?ActionInterface
     {

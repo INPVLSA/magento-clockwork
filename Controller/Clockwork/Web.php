@@ -13,13 +13,25 @@ use Psr\Log\LoggerInterface;
 
 class Web implements HttpGetActionInterface
 {
+    protected ClockworkSupport $clockworkSupport;
+    protected HttpFactory $responseFactory;
+    protected Repository $assetRepository;
+    protected LoggerInterface $logger;
+    protected File $fileDriver;
+
     public function __construct(
-        protected ClockworkSupport $clockworkSupport,
-        protected HttpFactory $responseFactory,
-        protected Repository $assetRepository,
-        protected LoggerInterface $logger,
-        protected File $fileDriver
-    ) {}
+        ClockworkSupport $clockworkSupport,
+        HttpFactory $responseFactory,
+        Repository $assetRepository,
+        LoggerInterface $logger,
+        File $fileDriver
+    ) {
+        $this->fileDriver = $fileDriver;
+        $this->logger = $logger;
+        $this->assetRepository = $assetRepository;
+        $this->responseFactory = $responseFactory;
+        $this->clockworkSupport = $clockworkSupport;
+    }
 
     /**
      * @throws FileSystemException|\Exception

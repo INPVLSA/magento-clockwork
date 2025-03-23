@@ -7,9 +7,13 @@ use Magento\Framework\App\CacheInterface;
 
 class ProfilerClockwork
 {
+    protected CacheDataSource $cacheDataSource;
+
     public function __construct(
-        protected CacheDataSource $cacheDataSource
-    ) {}
+        CacheDataSource $cacheDataSource
+    ) {
+        $this->cacheDataSource = $cacheDataSource;
+    }
 
     public function aroundSave(CacheInterface $subject, callable $proceed, $data, $identifier, $tags = [], $lifeTime = null)
     {

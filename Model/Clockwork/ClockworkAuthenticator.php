@@ -41,11 +41,16 @@ class ClockworkAuthenticator implements AuthenticatorInterface
             '127.'
         ]
     ];
+    protected StoreManagerInterface $storeManager;
+    protected MaintenanceMode $maintenanceMode;
 
     public function __construct(
-        protected StoreManagerInterface $storeManager,
-        protected MaintenanceMode $maintenanceMode
-    ) {}
+        StoreManagerInterface $storeManager,
+        MaintenanceMode $maintenanceMode
+    ) {
+        $this->maintenanceMode = $maintenanceMode;
+        $this->storeManager = $storeManager;
+    }
 
     public function attempt(array $credentials): bool
     {

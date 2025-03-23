@@ -17,19 +17,27 @@ use Magento\Framework\Serialize\SerializerInterface;
 class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
 {
     /**
-     * @param Http $request
-     * @param HttpFactory $responseFactory
-     * @param SerializerInterface $serializer
-     * @param ClockworkAuthenticator $authenticator
-     * @param Service $clockworkService
+     * @var Http
      */
+    protected RequestInterface $request;
+    protected HttpFactory $responseFactory;
+    protected SerializerInterface $serializer;
+    protected ClockworkAuthenticator $authenticator;
+    protected Service $clockworkService;
+
     public function __construct(
-        protected RequestInterface $request,
-        protected HttpFactory $responseFactory,
-        protected SerializerInterface $serializer,
-        protected ClockworkAuthenticator $authenticator,
-        protected Service $clockworkService
-    ) {}
+        RequestInterface $request,
+        HttpFactory $responseFactory,
+        SerializerInterface $serializer,
+        ClockworkAuthenticator $authenticator,
+        Service $clockworkService
+    ) {
+        $this->clockworkService = $clockworkService;
+        $this->authenticator = $authenticator;
+        $this->serializer = $serializer;
+        $this->responseFactory = $responseFactory;
+        $this->request = $request;
+    }
 
     public function execute(): ResponseInterface
     {

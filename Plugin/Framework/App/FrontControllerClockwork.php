@@ -10,10 +10,16 @@ use Magento\Framework\Profiler;
 
 class FrontControllerClockwork
 {
+    protected Service $clockworkService;
+    protected ClockworkProfilerDriver $driver;
+
     public function __construct(
-        protected Service $clockworkService,
-        protected ClockworkProfilerDriver $driver
-    ) {}
+        Service $clockworkService,
+        ClockworkProfilerDriver $driver
+    ) {
+        $this->driver = $driver;
+        $this->clockworkService = $clockworkService;
+    }
 
     public function beforeDispatch(FrontController $subject, RequestInterface $request): void
     {

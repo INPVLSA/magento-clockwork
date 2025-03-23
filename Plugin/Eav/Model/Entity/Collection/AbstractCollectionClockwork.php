@@ -7,9 +7,13 @@ use Magento\Framework\Data\Collection;
 
 class AbstractCollectionClockwork
 {
+    protected MagentoCollectionDataSource $magentoCollectionDataSource;
+
     public function __construct(
-        protected MagentoCollectionDataSource $magentoCollectionDataSource
-    ) {}
+        MagentoCollectionDataSource $magentoCollectionDataSource
+    ) {
+        $this->magentoCollectionDataSource = $magentoCollectionDataSource;
+    }
 
     public function aroundLoad(Collection $subject, callable $proceed, $printQuery = false, $logQuery = false)
     {

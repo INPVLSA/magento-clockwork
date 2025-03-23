@@ -15,9 +15,13 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
     /**
      * @param AbstractGroupHandler[] $resolvers
      */
+    protected array $resolvers = [];
+
     public function __construct(
-        protected array $resolvers = []
-    ) {}
+        array $resolvers = []
+    ) {
+        $this->resolvers = $resolvers;
+    }
 
     protected array $nameCache = [];
 
@@ -96,11 +100,11 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
 
         if ($tags) {
             if (isset($tags['group'])) {
-                $color = match ($tags['group']) {
-                    'EVENT' => 'green',
-                    'TEMPLATE' => 'purple',
-                    default => 'blue',
-                };
+                if ($tags['group'] === 'EVENT') {
+                    $color = 'green';
+                } elseif ($tags['group'] === 'TEMPLATE') {
+                    $color = 'purple';
+                }
             }
         }
 

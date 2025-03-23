@@ -8,9 +8,13 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ControllerFrontSendResponseBefore implements ObserverInterface
 {
+    protected Service $clockworkService;
+
     public function __construct(
-        protected Service $clockworkService
-    ) {}
+        Service $clockworkService
+    ) {
+        $this->clockworkService = $clockworkService;
+    }
 
     public function execute(Observer $observer): void
     {

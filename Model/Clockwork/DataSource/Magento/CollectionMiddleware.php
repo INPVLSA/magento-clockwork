@@ -33,7 +33,7 @@ class CollectionMiddleware extends AbstractMiddleware
         if ($collection instanceof AbstractCollection) {
             try {
                 $data['entity'] = $collection->getEntity()->getEntityType()->getEntityTypeCode();
-            } catch (\Exception) {
+            } catch (\Exception $e) {
                 // skip
             }
             $data['getLoadedIds'] = $collection->getLoadedIds();
