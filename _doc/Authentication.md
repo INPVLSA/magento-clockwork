@@ -29,8 +29,11 @@ Is passes by default:
     - `172.31`
     - `127.`
 - IPs added to Magento maintenance mode whitelist
+<hr>
 
-If you still can access it for some reason - look into `\Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator`
+- If you still can't access /clockwork URL you can add your IP to the maintenance mode whitelist.
+
+- If you still can access it for some reason - look into `\Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator`
 
 ⬅️ Return to [Documentation](../readme.md)
 ⬅️ Return to [Repository](https://github.com/INPVLSA/magento-clockwork/blob/master/)
