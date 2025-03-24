@@ -46,8 +46,7 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
 
         $this->clockworkService->initClockwork();
         $clockwork = $this->clockworkService->getInstance();
-
-        $authenticated = $this->authenticator->attempt([]);
+        $authenticated = $this->authenticator->attemptRead();
 
         if ($authenticated !== true) {
             $response->setBody(

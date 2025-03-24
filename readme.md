@@ -40,7 +40,7 @@ Development tool for Magento 2 with timeline, database queries, cache, templates
 
 ## 🔧 Installation
 
-**Important**! Use `--dev` flag to avoid installing Clockwork on live environments
+- You are free now to install it to non-local instances (with no `--dev`), check the [Authentication](#-authentication) section. But I strongly recommend not adding packages to production environments and use `--dev` flag.
 
 ```bash
 composer require inpvlsa/magento2-clockwork --dev
@@ -50,7 +50,7 @@ composer require inpvlsa/magento2-clockwork --dev
 
 ```bash
 php bin/magento module:enable Inpvlsa_Clockwork
-php bin/magento dev:profiler:enable Inpvlsa\\Clockwork\\Model\\Profiler\\ClockworkProfilerDriver
+php bin/magento config:set dev/clockwork/enabled 1
 ```
 
 Data storage is set to `file` by default. 
@@ -63,7 +63,7 @@ php bin/magento config:set dev/clockwork/data_storage file|redis
 
 > Redis storage requires session storage to be set to Redis (It retrieves redis connection data from the Magento deployment config).
 
-### Authentication
+## 🔐 Authentication
 
 > Authenticator should allow you to access Clockwork panel on the local environment.
 
@@ -73,9 +73,10 @@ php bin/magento config:set dev/clockwork/data_storage file|redis
 
 ## 🧐 Usage
 
-You can access Clockwork panel in 2 ways:
-1. By adding `/clockwork` to the root URL of your Magento instance.
-2. By using [Clockwork Chrome](https://chromewebstore.google.com/detail/clockwork/dmggabnehkmmfmdffgajcflpdjlnoemp) or [Clockwork Firefox](https://addons.mozilla.org/en-US/firefox/addon/clockwork-dev-tools/) extension (Tab "Clockwork" in browser developer toolbar).
+Just open `/clockwork` URL from your Magento root.
+
+- Timeline events can be grouped by type, filtered by text, and sorted by time.
+- Button at the right of search input might be very useful
 
 ## 🏞️ More screenshots
 

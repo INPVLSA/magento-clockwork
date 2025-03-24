@@ -6,6 +6,7 @@
         <dev>
             <clockwork>
                 <data_storage>file</data_storage>
+                <enabled>0</enabled>
             </clockwork>
         </dev>
     </default>
