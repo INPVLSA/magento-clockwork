@@ -46,7 +46,7 @@ class Service
     {
         $this->validateRequest($request);
 
-        if (!Service::$enabled || !$request instanceof Http || !$this->authenticator->attempt([])) {
+        if (!Service::$enabled || !$request instanceof Http || !$this->authenticator->attemptWrite()) {
             return;
         }
         $this->initClockwork();
@@ -93,6 +93,11 @@ class Service
         $config['enable'] = true;
 
         Clockwork::init($config);
+    }
+
+    public function isExtensionEnabled(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('dev/clockwork/enabled');
     }
 
     protected function checkDirExistsOrCreate(): void
@@ -157,6 +162,6 @@ class Service
 
     public function getStatus(): bool
     {
-        return Service::$enabled && Clockwork::instance();
+        return Service::$enabled && Clockwork::instance() && $this->authenticator->attemptWrite();
     }
 }

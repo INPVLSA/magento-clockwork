@@ -28,7 +28,7 @@ class Router implements RouterInterface
     {
         $result = null;
 
-        if ($request instanceof Http && $this->clockworkAuthenticator->attempt([])) {
+        if ($request instanceof Http && $this->clockworkAuthenticator->attemptRead()) {
             $path = trim($request->getPathInfo(), '/');
 
             if (str_starts_with($path, 'clockwork')) {

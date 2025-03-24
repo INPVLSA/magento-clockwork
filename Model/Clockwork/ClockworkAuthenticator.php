@@ -3,6 +3,7 @@
 namespace Inpvlsa\Clockwork\Model\Clockwork;
 
 use Clockwork\Authentication\AuthenticatorInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\MaintenanceMode;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -43,22 +44,31 @@ class ClockworkAuthenticator implements AuthenticatorInterface
     ];
     protected StoreManagerInterface $storeManager;
     protected MaintenanceMode $maintenanceMode;
+    protected ScopeConfigInterface $scopeConfig;
 
     public function __construct(
         StoreManagerInterface $storeManager,
-        MaintenanceMode $maintenanceMode
+        MaintenanceMode $maintenanceMode,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->maintenanceMode = $maintenanceMode;
         $this->storeManager = $storeManager;
+        $this->scopeConfig = $scopeConfig;
+    }
+
+    public function attemptWrite(): bool
+    {
+        return $this->scopeConfig->getValue('dev/clockwork/enabled') && $this->attemptRead();
+    }
+
+    public function attemptRead(): bool
+    {
+        return $this->isAllowByMagentoUrl() || $this->isAllowByIp();
     }
 
     public function attempt(array $credentials): bool
     {
-        if ($this->isAllowByMagentoUrl() || $this->isAllowByIp()) {
-            return true;
-        }
-
-        return false;
+        return $this->attemptWrite();
     }
 
     protected function isAllowByIp(): bool
