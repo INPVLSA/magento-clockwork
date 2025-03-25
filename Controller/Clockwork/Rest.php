@@ -85,6 +85,7 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
         // Uncomment on Client App development
         // $response->setHeader('Access-Control-Allow-Origin', '*');
         $response->setHeader('Access-Control-Allow-Headers', 'x-clockwork-auth');
+        $response->setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
         return $response;
     }
