@@ -40,14 +40,8 @@
                 <item name="request" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoRequestDataSource</item>
                 <item name="collection" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoCollectionDataSource</item>
                 <item name="cache" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\CacheDataSource</item>
-                <item name="log" xsi:type="object">Clockwork\DataSource\MonologDataSource</item>
+                <item name="log" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MonologDataSource</item>
             </argument>
-        </arguments>
-    </type>
-
-    <type name="Clockwork\DataSource\MonologDataSource">
-        <arguments>
-            <argument name="monolog" xsi:type="object">Magento\Framework\Logger\Monolog</argument>
         </arguments>
     </type>
 
