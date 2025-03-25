@@ -48,6 +48,8 @@ class Web implements HttpGetActionInterface
         $response = $this->responseFactory->create();
         $response->setBody($html);
 
+        $response->setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+
         return $response;
     }
 
