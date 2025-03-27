@@ -138,10 +138,15 @@ class Service
      */
     protected function validateRequest(RequestInterface $request): void
     {
-        if (str_starts_with($request->getPathInfo(), '/clockwork_static')
-            || str_starts_with($request->getPathInfo(), '/clockwork')
-            || str_starts_with($request->getPathInfo(), '/__clockwork')
-        ) {
+        foreach (['/clockwork_static', '/clockwork', '/__clockwork'] as $beginsWith) {
+            if (strpos($request->getPathInfo(), $beginsWith) === 0) {
+                $this->disable();
+
+                return;
+            }
+        }
+
+        if (strpos($request->getPathInfo(), 'favicon.ico') !== false) {
             $this->disable();
         }
     }
