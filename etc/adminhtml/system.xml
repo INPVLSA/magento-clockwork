@@ -6,14 +6,59 @@
             <group id="clockwork" translate="label" type="text" sortOrder="22" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Clockwork</label>
 
-                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1">
                     <label>Collecting data</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="data_storage" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="toolbar" translate="label comment" type="select" sortOrder="15" showInDefault="1">
+                    <label>Enable toolbar</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="data_storage" translate="label comment" type="select" sortOrder="20" showInDefault="1">
                     <label>Data Storage</label>
                     <source_model>Inpvlsa\Clockwork\Model\Config\Option\ClockworkDataStorage</source_model>
+                </field>
+
+                <field id="redis_from" translate="label comment" type="select" sortOrder="30" showInDefault="1">
+                    <label>Use redis credentials from</label>
+                    <source_model>Inpvlsa\Clockwork\Model\Config\Option\RedisCredentials</source_model>
+                    <depends>
+                        <field id="data_storage">redis</field>
+                    </depends>
+                </field>
+
+                <field id="redis_custom_host" translate="label comment" type="text" sortOrder="40" showInDefault="1">
+                    <label>Redis Host</label>
+                    <depends>
+                        <field id="data_storage">redis</field>
+                        <field id="redis_from">custom</field>
+                    </depends>
+                </field>
+
+                <field id="redis_custom_port" translate="label comment" type="text" sortOrder="50" showInDefault="1">
+                    <label>Redis Port</label>
+                    <depends>
+                        <field id="data_storage">redis</field>
+                        <field id="redis_from">custom</field>
+                    </depends>
+                </field>
+
+                <field id="redis_custom_db" translate="label comment" type="text" sortOrder="60" showInDefault="1">
+                    <label>Redis Database</label>
+                    <depends>
+                        <field id="data_storage">redis</field>
+                        <field id="redis_from">custom</field>
+                    </depends>
+                </field>
+
+                <field id="redis_custom_password" translate="label comment" type="text" sortOrder="70" showInDefault="1">
+                    <label>Redis Password</label>
+                    <depends>
+                        <field id="data_storage">redis</field>
+                        <field id="redis_from">custom</field>
+                    </depends>
                 </field>
             </group>
         </section>

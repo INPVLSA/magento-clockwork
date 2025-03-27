@@ -2,7 +2,13 @@
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <head>
-        <script src="Inpvlsa_Clockwork::lib/toolbar.min.js" async="true" defer="true"/>
-    </head>
+    <body>
+        <referenceBlock name="root">
+            <block  class="Inpvlsa\Clockwork\Block\Clockwork\Toolbar"
+                    name="clockwork-toolbar"
+                    template="Inpvlsa_Clockwork::toolbar-init.phtml"
+                    after="-"
+            />
+        </referenceBlock>
+    </body>
 </page>

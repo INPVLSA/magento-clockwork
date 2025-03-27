@@ -7,6 +7,12 @@
             <clockwork>
                 <data_storage>file</data_storage>
                 <enabled>0</enabled>
+                <toolbar>1</toolbar>
+                <redis_from>session</redis_from>
+                <redis_custom_host>localhost</redis_custom_host>
+                <redis_custom_port>6379</redis_custom_port>
+                <redis_custom_db>3</redis_custom_db>
+                <redis_custom_password/>
             </clockwork>
         </dev>
     </default>
