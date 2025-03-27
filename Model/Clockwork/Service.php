@@ -4,42 +4,24 @@ namespace Inpvlsa\Clockwork\Model\Clockwork;
 
 use Clockwork\Support\Vanilla\Clockwork;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoRequestDataSource;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\DeploymentConfig;
-use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Filesystem;
-use Magento\Framework\Filesystem\Driver\File;
-use Psr\Log\LoggerInterface;
 
 class Service
 {
     public static bool $enabled = true;
     protected ClockworkAuthenticator $authenticator;
-    protected ScopeConfigInterface $scopeConfig;
-    protected DeploymentConfig $deploymentConfig;
-    protected LoggerInterface $logger;
-    protected Filesystem\Proxy $filesystem;
-    protected File\Proxy $fileDriver;
     protected array $dataSources = [];
+    protected ConfigBuilder $clockworkConfigBuilder;
 
     public function __construct(
         ClockworkAuthenticator $authenticator,
-        ScopeConfigInterface $scopeConfig,
-        DeploymentConfig $deploymentConfig,
-        LoggerInterface $logger,
-        Filesystem\Proxy $filesystem,
-        File\Proxy $fileDriver,
+        ConfigBuilder $clockworkConfigBuilder,
         array $dataSources = []
     ) {
         $this->dataSources = $dataSources;
-        $this->fileDriver = $fileDriver;
-        $this->filesystem = $filesystem;
-        $this->logger = $logger;
-        $this->deploymentConfig = $deploymentConfig;
-        $this->scopeConfig = $scopeConfig;
         $this->authenticator = $authenticator;
+        $this->clockworkConfigBuilder = $clockworkConfigBuilder;
     }
 
     public function initializeForTracking(RequestInterface $request): void
@@ -49,7 +31,7 @@ class Service
         if (!Service::$enabled || !$request instanceof Http || !$this->authenticator->attemptWrite()) {
             return;
         }
-        $this->initClockwork();
+        $this->initialize();
 
         foreach ($this->dataSources as $dataSource) {
             $this->getInstance()->getClockwork()->addDataSource($dataSource);
@@ -60,70 +42,10 @@ class Service
         }
     }
 
-    public function initClockwork(): void
+    public function initialize(): void
     {
-        $defaultConfig = [
-            'storage' => 'files',
-            'storage_files_path' => BP . '/var/clockwork'
-        ];
-
-        try {
-            $storageConfigValue = $this->scopeConfig->getValue('dev/clockwork/data_storage');
-
-            if ($storageConfigValue === 'redis') {
-                $config = [
-                    'storage' => 'redis',
-                    'storage_redis' => $this->getRedisConfig()
-                ];
-            } else {
-                $config = $defaultConfig;
-            }
-        } catch (\Throwable $e) {
-            $config = $defaultConfig;
-        }
-
-        if ($config['storage'] !== 'files' && $config['storage_' . $config['storage']] === null) {
-            $this->logger->warning('Clockwork: Redis configuration is missing, falling back to files storage');
-            $config = $defaultConfig;
-        }
-
-        if ($config['storage'] === 'files') {
-            $this->checkDirExistsOrCreate();
-        }
-        $config['enable'] = true;
-
+        $config = $this->clockworkConfigBuilder->getClockworkConfig();
         Clockwork::init($config);
-    }
-
-    public function isExtensionEnabled(): bool
-    {
-        return (bool)$this->scopeConfig->getValue('dev/clockwork/enabled');
-    }
-
-    protected function checkDirExistsOrCreate(): void
-    {
-        $varDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
-        $clockworkPath = $varDirectory->getAbsolutePath('clockwork');
-
-        if (!$this->fileDriver->isDirectory($clockworkPath)) {
-            $varDirectory->create('clockwork');
-        }
-    }
-
-    protected function getRedisConfig(): ?array
-    {
-        $host = $this->deploymentConfig->get('session/redis/host');
-
-        if ($host === null) {
-            return null;
-        }
-
-        return [
-            'host' => $host,
-            'port' => $this->deploymentConfig->get('session/redis/port'),
-            'database' => $this->deploymentConfig->get('session/redis/database'),
-            'pass' => $this->deploymentConfig->get('session/redis/password'),
-        ];
     }
 
     public function getInstance(): Clockwork

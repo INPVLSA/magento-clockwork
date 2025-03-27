@@ -56,12 +56,16 @@ php bin/magento config:set dev/clockwork/enabled 1
 Data storage is set to `file` by default. 
 
 - You can change it in the configuration `Stores -> Advanced -> Developer -> Clockwork`
-- Or using CLI 
+- Or using CLI
+
 ```bash
 php bin/magento config:set dev/clockwork/data_storage file|redis
 ```
 
-> Redis storage requires session storage to be set to Redis (It retrieves redis connection data from the Magento deployment config).
+> - Redis storage by default requires Magento session storage to be set to Redis (It retrieves redis connection data from the Magento deployment config).
+> - After switching to Redis check logs, there might be initialization errors causes fallback to file storage.
+
+#### [More about Redis configuration](_doc/Redis.md)
 
 ## 🔐 Authentication
 

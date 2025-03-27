@@ -35,5 +35,7 @@ Is passes by default:
 
 - If you still can access it for some reason - look into `\Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator`
 
-⬅️ Return to [Documentation](../readme.md)
-⬅️ Return to [Repository](https://github.com/INPVLSA/magento-clockwork/blob/master/)
+<hr>
+
+- ⬅️ Return to [Documentation](../readme.md)
+- ⬅️ Return to [Repository](https://github.com/INPVLSA/magento-clockwork/blob/master/)
