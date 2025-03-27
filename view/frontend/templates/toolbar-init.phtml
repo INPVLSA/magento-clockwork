@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var $block Toolbar
+ * @var $escaper Escaper
+ */
+
+use Inpvlsa\Clockwork\Block\Clockwork\Toolbar;
+use Magento\Framework\Escaper;
+
+?>
+<?php if ($block->canRender()): ?>
+<script type="text/javascript" src="<?= $escaper->escapeUrl($block->getViewFileUrl('Inpvlsa_Clockwork::lib/toolbar.js')) ?>" async defer></script>
+<?php endif; ?>

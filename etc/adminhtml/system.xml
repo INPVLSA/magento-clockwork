@@ -11,6 +11,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="toolbar" translate="label comment" type="select" sortOrder="15" showInDefault="1">
+                    <label>Enable toolbar</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="data_storage" translate="label comment" type="select" sortOrder="20" showInDefault="1">
                     <label>Data Storage</label>
                     <source_model>Inpvlsa\Clockwork\Model\Config\Option\ClockworkDataStorage</source_model>

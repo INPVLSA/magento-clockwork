@@ -69,6 +69,9 @@ class ConfigBuilder
 
             if ($storageConfigValue === 'redis') {
                 $config = [
+                    'web' => [
+                        'enable' => '/clockwork'
+                    ],
                     'storage' => 'redis',
                     'storage_redis' => $this->getRedisConfig($redisConfigSource)
                 ];
