@@ -43,7 +43,7 @@ Development tool for Magento 2 with timeline, database queries, cache, templates
 - You are free now to install it to non-local instances (with no `--dev`), check the [Authentication](#-authentication) section. But I strongly recommend not adding packages to production environments and use `--dev` flag.
 
 ```bash
-composer require inpvlsa/magento2-clockwork --dev
+composer require inpvlsa/magento-clockwork --dev
 ```
 
 ## 🛠️ Setup/Configuration
