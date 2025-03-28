@@ -90,7 +90,7 @@ For detailed authentication options, see <ins>[Authentication Documentation](_do
 
 ## 🧩 Usage
 
-1. Navigate to /clockwork from your Magento root URL
+1. Navigate to `/clockwork` from your Magento root URL
 2. Explore timeline events grouped by type
 3. Use text filters to search specific information
 4. Utilize the button on the right of the search input for additional sorting options
