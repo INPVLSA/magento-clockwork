@@ -1,10 +1,10 @@
 # ⚙️ Clockwork for Magento 2
 
-![PHP 7.4+](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)
-![Magento 2.4.3+](https://img.shields.io/badge/Magento-2.4.3%2B-orange.svg)
-![License MIT](https://img.shields.io/badge/License-MIT-green.svg)
-![Packagist Version](https://img.shields.io/packagist/v/inpvlsa/magento-clockwork)
-![Packagist Downloads](https://img.shields.io/packagist/dt/inpvlsa/magento-clockwork)
+[![PHP 7.4+](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](#)
+[![Magento 2.4.3+](https://img.shields.io/badge/Magento-2.4.3%2B-orange.svg)](#)
+[![License MIT](https://img.shields.io/badge/License-MIT-green.svg)](#)
+[![Packagist Version](https://img.shields.io/packagist/v/inpvlsa/magento-clockwork)](https://packagist.org/packages/inpvlsa/magento-clockwork)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/inpvlsa/magento-clockwork)](#)
 
 A powerful development tool that brings advanced debugging and profiling capabilities to Magento 2.
 
