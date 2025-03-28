@@ -39,7 +39,48 @@ class CacheMiddleware extends AbstractMiddleware
             'value' => $data,
             'data' => [
                 'tags' => $tags,
-                'lifeTime' => $lifeTime,
+                'expiration' => $lifeTime,
+                'time' => $startTime
+            ]
+        ];
+
+        ($this->onQuery)($data);
+
+        return $result;
+    }
+
+    public function processRemove(callable $wrappedFn, string $identifier)
+    {
+        $startTime = microtime(true);
+        $result = $wrappedFn($identifier);
+
+        $data = [
+            'start' => $startTime,
+            'end' => microtime(true),
+            'type' => 'delete',
+            'identifier' => $identifier,
+            'data' => [
+                'time' => $startTime
+            ]
+        ];
+
+        ($this->onQuery)($data);
+
+        return $result;
+    }
+
+    public function processClean(callable $wrappedFn, array $tags = [])
+    {
+        $startTime = microtime(true);
+        $result = $wrappedFn($tags);
+
+        $data = [
+            'start' => $startTime,
+            'end' => microtime(true),
+            'type' => 'delete',
+            'identifier' => empty($tags) ? '*' : implode(',', $tags),
+            'data' => [
+                'tags' => empty($tags) ? '*' : $tags,
                 'time' => $startTime
             ]
         ];

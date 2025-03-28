@@ -4,7 +4,7 @@ namespace Inpvlsa\Clockwork\Model\Profiler\GroupHandler;
 
 use Clockwork\Request\Timeline\Event as ClockworkEvent;
 use Clockwork\Support\Vanilla\Clockwork;
-use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
+use Inpvlsa\Clockwork\Model\Clockwork\FlexEvent;
 
 class Template extends AbstractGroupHandler
 {

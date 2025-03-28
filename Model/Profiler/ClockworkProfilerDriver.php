@@ -4,7 +4,7 @@ namespace Inpvlsa\Clockwork\Model\Profiler;
 
 use Clockwork\Clockwork;
 use Clockwork\Request\Timeline\Event;
-use Inpvlsa\Clockwork\Model\Clockwork\Service;
+use Inpvlsa\Clockwork\Service\Clockwork\Service;
 use Inpvlsa\Clockwork\Model\Profiler\GroupHandler\AbstractGroupHandler;
 use Magento\Framework\Profiler\Driver\Standard\OutputInterface;
 use Magento\Framework\Profiler\Driver\Standard\Stat;

@@ -6,7 +6,7 @@ use Clockwork\DataSource\DataSource;
 use Clockwork\Request\Request;
 use Clockwork\Request\Timeline\Event;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\Magento\CollectionMiddleware;
-use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
+use Inpvlsa\Clockwork\Model\Clockwork\FlexEvent;
 
 class MagentoCollectionDataSource extends DataSource
 {
@@ -31,9 +31,9 @@ class MagentoCollectionDataSource extends DataSource
                     continue;
                 }
 
-                $tableData[] = [$key, $value];
+                $tableData[] = ['Key/Method' => $key, 'Value' => $value];
             }
-            $tableData[] = ['Time, ms', ($eventData['end'] - $eventData['start']) * 1000];
+            $tableData[] = ['Key/Method' => 'Time, ms', 'Value' => ($eventData['end'] - $eventData['start']) * 1000];
             $request->userData('Collections')->table($item['name'], $tableData);
         }
 

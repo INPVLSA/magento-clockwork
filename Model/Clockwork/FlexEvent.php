@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Inpvlsa\Clockwork\Model\Clockwork\Model;
+namespace Inpvlsa\Clockwork\Model\Clockwork;
 
 use Clockwork\Request\Timeline\Event;
 use Magento\Framework\DataObject;

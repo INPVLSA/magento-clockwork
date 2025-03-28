@@ -21,9 +21,9 @@ class CacheDataSource extends DataSource
                     $query['end'] - $query['start'],
                     $query['data']
                 );
-            } elseif ($query['type'] === 'load') {
+            } else {
                 $request->addCacheQuery(
-                    'load',
+                    $query['type'],
                     $query['identifier'],
                     null,
                     $query['end'] - $query['start'],

@@ -24,4 +24,14 @@ class ProfilerClockwork
     {
         return $this->cacheDataSource->middleware()->processLoad($proceed, $identifier);
     }
+
+    public function aroundRemove(CacheInterface $subject, callable $proceed, $identifier)
+    {
+        return $this->cacheDataSource->middleware()->processRemove($proceed, $identifier);
+    }
+
+    public function aroundClean(CacheInterface $subject, callable $proceed, $tags = [])
+    {
+        return $this->cacheDataSource->middleware()->processClean($proceed, $tags);
+    }
 }

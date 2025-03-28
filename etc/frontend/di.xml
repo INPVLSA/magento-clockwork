@@ -31,7 +31,7 @@
         </arguments>
     </type>
 
-    <type name="Inpvlsa\Clockwork\Model\Clockwork\Service">
+    <type name="Inpvlsa\Clockwork\Service\Clockwork\Service">
         <arguments>
             <argument name="dataSources" xsi:type="array">
                 <item name="db" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDbDataSource</item>
@@ -98,5 +98,14 @@
     <type name="Magento\Framework\App\CacheInterface">
         <plugin name="Inpvlsa_Clockwork::cacheFrontendDecoratorProfilerClockwork"
                 type="Inpvlsa\Clockwork\Plugin\Framework\Cache\Frontend\Decorator\ProfilerClockwork"/>
+    </type>
+
+    <type name="Inpvlsa\Clockwork\Service\Clockwork\Authenticator">
+        <arguments>
+            <argument name="authenticators" xsi:type="array">
+                <item name="ip" xsi:type="object">Inpvlsa\Clockwork\Service\Clockwork\Authenticator\IpWhitelistAuthenticator</item>
+                <item name="base_url" xsi:type="object">Inpvlsa\Clockwork\Service\Clockwork\Authenticator\MagentoBaseUrlAuthenticator</item>
+            </argument>
+        </arguments>
     </type>
 </config>

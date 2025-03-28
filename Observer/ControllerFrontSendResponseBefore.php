@@ -2,7 +2,7 @@
 
 namespace Inpvlsa\Clockwork\Observer;
 
-use Inpvlsa\Clockwork\Model\Clockwork\Service;
+use Inpvlsa\Clockwork\Service\Clockwork\Service;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 

@@ -4,7 +4,7 @@ namespace Inpvlsa\Clockwork\Controller;
 
 use Inpvlsa\Clockwork\Controller\Clockwork\Rest;
 use Inpvlsa\Clockwork\Controller\Clockwork\Web;
-use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
+use Inpvlsa\Clockwork\Service\Clockwork\Authenticator;
 use Magento\Framework\App\ActionFactory;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Request\Http;
@@ -14,11 +14,11 @@ use Magento\Framework\App\RouterInterface;
 class Router implements RouterInterface
 {
     protected ActionFactory $actionFactory;
-    protected ClockworkAuthenticator $clockworkAuthenticator;
+    protected Authenticator $clockworkAuthenticator;
 
     public function __construct(
         ActionFactory $actionFactory,
-        ClockworkAuthenticator $clockworkAuthenticator
+        Authenticator $clockworkAuthenticator
     ) {
         $this->clockworkAuthenticator = $clockworkAuthenticator;
         $this->actionFactory = $actionFactory;

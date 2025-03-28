@@ -8,12 +8,18 @@ use Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDb\ZendMiddleware;
 
 class ZendDbDataSource extends DataSource
 {
-    protected array $queries = [];
+    protected const SLOW_THRESHOLD_MS = 500;
 
+    protected array $queries = [];
     protected ZendMiddleware $middleware;
 
     public function resolve(Request $request): Request
     {
+        foreach ($this->queries as &$query) {
+            if ($query['duration'] > static::SLOW_THRESHOLD_MS) {
+                $query['tags']['slow'] = true;
+            }
+        }
         $request->databaseQueries = array_merge($request->databaseQueries, $this->queries);
 
         return $request;

@@ -33,7 +33,7 @@ Is passes by default:
 
 - If you still can't access /clockwork URL you can add your IP to the maintenance mode whitelist.
 
-- If you still can access it for some reason - look into `\Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator`
+- If you still can access it for some reason - look into `\Inpvlsa\Clockwork\Service\Clockwork\Authenticator`
 
 <hr>
 
