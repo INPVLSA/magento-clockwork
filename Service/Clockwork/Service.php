@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Inpvlsa\Clockwork\Model\Clockwork;
+namespace Inpvlsa\Clockwork\Service\Clockwork;
 
 use Clockwork\Support\Vanilla\Clockwork;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoRequestDataSource;
@@ -10,12 +10,12 @@ use Magento\Framework\App\RequestInterface;
 class Service
 {
     public static bool $enabled = true;
-    protected ClockworkAuthenticator $authenticator;
+    protected Authenticator $authenticator;
     protected array $dataSources = [];
     protected ConfigBuilder $clockworkConfigBuilder;
 
     public function __construct(
-        ClockworkAuthenticator $authenticator,
+        Authenticator $authenticator,
         ConfigBuilder $clockworkConfigBuilder,
         array $dataSources = []
     ) {

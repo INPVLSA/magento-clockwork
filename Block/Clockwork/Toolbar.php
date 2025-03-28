@@ -2,16 +2,16 @@
 
 namespace Inpvlsa\Clockwork\Block\Clockwork;
 
-use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
+use Inpvlsa\Clockwork\Service\Clockwork\Authenticator;
 use Magento\Framework\View\Element\Template;
 
 class Toolbar extends Template
 {
-    protected ClockworkAuthenticator $clockworkAuthenticator;
+    protected Authenticator $clockworkAuthenticator;
 
     public function __construct(
         Template\Context $context,
-        ClockworkAuthenticator $clockworkAuthenticator,
+        Authenticator $clockworkAuthenticator,
         array $data = []
     ) {
         parent::__construct($context, $data);

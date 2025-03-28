@@ -6,7 +6,7 @@ use Clockwork\DataSource\DataSource;
 use Clockwork\Request\Request;
 use Clockwork\Request\Timeline\Event;
 use Inpvlsa\Clockwork\Model\Clockwork\DataSource\Magento\CollectionMiddleware;
-use Inpvlsa\Clockwork\Model\Clockwork\Model\FlexEvent;
+use Inpvlsa\Clockwork\Model\Clockwork\FlexEvent;
 
 class MagentoCollectionDataSource extends DataSource
 {

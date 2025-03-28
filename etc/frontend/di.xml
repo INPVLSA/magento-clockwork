@@ -31,7 +31,7 @@
         </arguments>
     </type>
 
-    <type name="Inpvlsa\Clockwork\Model\Clockwork\Service">
+    <type name="Inpvlsa\Clockwork\Service\Clockwork\Service">
         <arguments>
             <argument name="dataSources" xsi:type="array">
                 <item name="db" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDbDataSource</item>

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Inpvlsa\Clockwork\Model\Clockwork;
+namespace Inpvlsa\Clockwork\Service\Clockwork;
 
 use Clockwork\Storage\RedisStorage;
 use Magento\Framework\App\Config\ScopeConfigInterface;

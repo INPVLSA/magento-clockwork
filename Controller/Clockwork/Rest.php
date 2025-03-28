@@ -4,8 +4,8 @@ namespace Inpvlsa\Clockwork\Controller\Clockwork;
 
 use Clockwork\Storage\Search;
 use Clockwork\Storage\Storage;
-use Inpvlsa\Clockwork\Model\Clockwork\ClockworkAuthenticator;
-use Inpvlsa\Clockwork\Model\Clockwork\Service;
+use Inpvlsa\Clockwork\Service\Clockwork\Authenticator;
+use Inpvlsa\Clockwork\Service\Clockwork\Service;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\HttpOptionsActionInterface;
 use Magento\Framework\App\Request\Http;
@@ -22,14 +22,14 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
     protected RequestInterface $request;
     protected HttpFactory $responseFactory;
     protected SerializerInterface $serializer;
-    protected ClockworkAuthenticator $authenticator;
+    protected Authenticator $authenticator;
     protected Service $clockworkService;
 
     public function __construct(
         RequestInterface $request,
         HttpFactory $responseFactory,
         SerializerInterface $serializer,
-        ClockworkAuthenticator $authenticator,
+        Authenticator $authenticator,
         Service $clockworkService
     ) {
         $this->clockworkService = $clockworkService;
@@ -76,15 +76,21 @@ class Rest implements HttpGetActionInterface, HttpOptionsActionInterface
             $data = $storage->find($id);
         }
 
-        $data = is_array($data)
-            ? array_map(function ($request) { return $request->toArray(); }, $data)
-            : $data->toArray();
+        if (is_array($data)) {
+            $data = array_map(function ($request) { return $request->toArray(); }, $data);
+        } else {
+            try {
+                $data = $data->toArray();
+            } catch (\Error $e) {
+                $data = [];
+            }
+        }
 
         $response = $this->responseFactory->create();
         $response->setBody($this->serializer->serialize($data));
 
         // Uncomment on Client App development
-        // $response->setHeader('Access-Control-Allow-Origin', '*');
+        $response->setHeader('Access-Control-Allow-Origin', '*');
         $response->setHeader('Access-Control-Allow-Headers', 'x-clockwork-auth');
         $response->setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 

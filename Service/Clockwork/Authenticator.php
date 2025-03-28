@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Inpvlsa\Clockwork\Model\Clockwork;
+namespace Inpvlsa\Clockwork\Service\Clockwork;
 
 use Clockwork\Authentication\AuthenticatorInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\MaintenanceMode;
 use Magento\Store\Model\StoreManagerInterface;
 
-class ClockworkAuthenticator implements AuthenticatorInterface
+class Authenticator implements AuthenticatorInterface
 {
     private const ALLOWED_HOSTS = [
         'host' => [
