@@ -39,7 +39,7 @@ class CacheMiddleware extends AbstractMiddleware
             'value' => $data,
             'data' => [
                 'tags' => $tags,
-                'lifeTime' => $lifeTime,
+                'expiration' => $lifeTime,
                 'time' => $startTime
             ]
         ];
