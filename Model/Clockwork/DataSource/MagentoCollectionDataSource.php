@@ -31,9 +31,9 @@ class MagentoCollectionDataSource extends DataSource
                     continue;
                 }
 
-                $tableData[] = [$key, $value];
+                $tableData[] = ['Key/Method' => $key, 'Value' => $value];
             }
-            $tableData[] = ['Time, ms', ($eventData['end'] - $eventData['start']) * 1000];
+            $tableData[] = ['Key/Method' => 'Time, ms', 'Value' => ($eventData['end'] - $eventData['start']) * 1000];
             $request->userData('Collections')->table($item['name'], $tableData);
         }
 
