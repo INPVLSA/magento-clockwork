@@ -1,89 +1,102 @@
-# ⚙️ Clockwork integration for Magento 2
+# ⚙️ Clockwork for Magento 2
 
-Development tool for Magento 2 with timeline, database queries, cache, templates, and more. Built on Clockwork.
+![PHP 7.4+](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)
+![Magento 2.4.3+](https://img.shields.io/badge/Magento-2.4.3%2B-orange.svg)
+![License MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Packagist Version](https://img.shields.io/packagist/v/inpvlsa/magento-clockwork)
+![Packagist Downloads](https://img.shields.io/packagist/dt/inpvlsa/magento-clockwork)
 
-- Clockwork: [GitHub](https://github.com/itsgoingd/clockwork) - [Website](https://underground.works/clockwork/) 
+A powerful development tool that brings advanced debugging and profiling capabilities to Magento 2.
 
-## ✨ Features
+Track timeline events, database queries, cache operations, template rendering, and more - all through an intuitive interface built on [⚙️ Clockwork](https://github.com/itsgoingd/clockwork).
 
-> CSV? No. Maybe open a separate page with only the last page's data? No.
+## 🚀 Key Features
 
+- **Comprehensive Timeline**: View and filter all page events by type or text
+- **Interactive Toolbar**: Quick access to debugging tools
+- **Detailed Profiling**: Track a wide range of timeline events:
+  - Routing processes
+  - Layout rendering
+  - Event dispatching
+  - Observer execution
+  - Collection loading
+- **Database Monitoring**
+  - SQL query inspection with syntax highlighting
+  - Sort, search, and analyze database operations
+- **Template Insights**: Track template rendering performance
+- **Cache Inspection**: Monitor cache operations with identifiers, data, tags, and TTL
+- **Request Analysis**: Examine Magento-specific and HTTP request data
+- **Search Integration**: Track all OpenSearch/ElasticSearch queries and responses
+- **AJAX Support**: Monitor all HTTP requests in the frontend area
 
-1. Timeline with filters by type/text
-2. Toolbar
-3. All profiler events. All filterable by types (not all implemented yet, but)
-    1. Routing
-    2. Layout
-    3. Events dispatching (Note: some layout-related events are not logged due to high amount of almost useless data)
-    4. Observers execution
-4. Collections. With SQL queries, load time, classname
-5. All database requests executed on the page. Sortable, searchable, prettified ✨
-6. Templates rendering
-7. Cache load/save with identifiers, data, tags, ttl (last 3 on write)
-8. Request data
-    1. Magento-specific data (`IsSecure`, `PathInfo`, etc.)
-    2. Http request data
-9. All OpenSearch/ElasticSearch queries/responses
-10. Supports AJAX (and all Http in frontend area)
+## 📋 Requirements
 
-![Web](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web.png?raw=true)
+- **PHP 7.4+**
+- **Magento 2 (Community Edition)**
 
-## 📝 Requirements
+> - Tested on versions:
+>    - 2.4.3 (PHP 7.4, with 3rd party extensions)
+>    - 2.4.6 (PHP 8.1, Hyva, 3rd party extensions)
+>    - 2.4.7 (PHP 8.3, clean installation)
 
-- **PHP 7.4** or later
-- **Community Magento 2** with similar PHP version requirements (tested only on Community, not tested with Enterprise yet)
+> Note: Minimum tested Magento version is 2.4.3. Enterprise Edition compatibility not yet verified.
 
-> Minimal tested Magento version is 2.4.3 
-> Tested on:
-> - 2.4.3 (PHP74, with a lot of 3rd party extensions)
-> - 2.4.6 (PHP81, Hyva, some 3rd party extensions)
-> - 2.4.7 (PHP83, clean)
-
-## 🔧 Installation
-
-- You are free now to install it to non-local instances (with no `--dev`), check the [Authentication](#-authentication) section. But I strongly recommend not adding packages to production environments and use `--dev` flag.
+## 📦 Installation
 
 ```bash
+# Recommended for development environments only
 composer require inpvlsa/magento-clockwork --dev
+
+# For dev/stage environments (see Authentication section)
+composer require inpvlsa/magento-clockwork
 ```
 
-## 🛠️ Setup/Configuration
+> You are free now to install it to non-local instances (with no `--dev`), check the [Authentication](#-authentication) section. But I strongly recommend not adding packages to production environments and use `--dev` flag.
+
+## ⚙️ Configuration
+
+Enable the module and turn on Clockwork writing mode:
 
 ```bash
 php bin/magento module:enable Inpvlsa_Clockwork
 php bin/magento config:set dev/clockwork/enabled 1
 ```
 
-Data storage is set to `file` by default. 
+### Storage options
 
-- You can change it in the configuration `Stores -> Advanced -> Developer -> Clockwork`
-- Or using CLI
+By default, data is stored in files. You can change the storage method:
+
+- Via admin panel: Stores → Advanced → Developer → Clockwork
+- Or using CLI:
 
 ```bash
-php bin/magento config:set dev/clockwork/data_storage file|redis
+php bin/magento config:set dev/clockwork/data_storage file|redis 
 ```
 
-> - Redis storage by default requires Magento session storage to be set to Redis (It retrieves redis connection data from the Magento deployment config).
-> - After switching to Redis check logs, there might be initialization errors causes fallback to file storage.
+> ### Redis Configuration Note
+> - Pre-set configuration of Redis storage requires Magento session storage to be configured for Redis
+>   - The module retrieves Redis connection data from Magento deployment config if not a "custom" redis credential is set in module configuration tab
+> - Check logs after switching to Redis - errors will cause fallback to file storage
 
-#### [More about Redis configuration](_doc/Redis.md)
+For detailed Redis configuration, see <ins>[Redis Documentation](_doc/Redis.md)</ins>.
 
 ## 🔐 Authentication
 
-> Authenticator should allow you to access Clockwork panel on the local environment.
+Authentication is automatically configured for local development environments.
 
-> If you still can't access `/clockwork` URL you can add your IP to the maintenance mode whitelist.
+If you can't access the /clockwork URL, add your IP to the maintenance mode whitelist.
 
-#### [Detailed description of authenticator](_doc/Authentication.md)
+For detailed authentication options, see <ins>[Authentication Documentation](_doc/Authentication.md)</ins>.
 
-## 🧐 Usage
+## 🧩 Usage
 
-Just open `/clockwork` URL from your Magento root.
+1. Navigate to /clockwork from your Magento root URL
+2. Explore timeline events grouped by type
+3. Use text filters to search specific information
+4. Utilize the button on the right of the search input for additional sorting options
+5. Explore logs, database queries, cache operations, collections tab, enjoy!
 
-- Timeline events can be grouped by type, filtered by text, and sorted by time.
-- Button at the right of search input might be very useful
-
-## 🏞️ More screenshots
+## 📸 Feature Showcase
 
 ![Web1](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web.png?raw=true)
 ![Web2](https://github.com/INPVLSA/magento-clockwork/blob/assets/repo_asset/Web2.png?raw=true)
