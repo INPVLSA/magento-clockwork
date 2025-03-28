@@ -2,19 +2,10 @@
 
 namespace Inpvlsa\Clockwork\Model\Clockwork\DataSource\ZendDb;
 
-class ZendMiddleware
+use Inpvlsa\Clockwork\Model\Clockwork\DataSource\AbstractMiddleware;
+
+class ZendMiddleware extends AbstractMiddleware
 {
-    /**
-     * @var callable
-     */
-    private $onQuery;
-
-    public function __construct(
-        callable $onQuery
-    ) {
-        $this->onQuery = $onQuery;
-    }
-
     public function process(callable $wrappedFn, $sql, $bind = [])
     {
         $startTime = microtime(true);

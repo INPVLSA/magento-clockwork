@@ -4,5 +4,5 @@ namespace Inpvlsa\Clockwork\Model\Clockwork\DataSource;
 
 class OpenSearchDataSource extends ElasticsearchDataSource
 {
-    protected const string NAME = 'OpenSearch';
+    protected const NAME = 'OpenSearch';
 }

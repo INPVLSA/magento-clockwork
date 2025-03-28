@@ -10,7 +10,7 @@ class ElasticsearchDataSource extends DataSource
 {
     protected array $searchData = [];
 
-    protected const string  NAME = 'ElasticSearch';
+    protected const NAME = 'ElasticSearch';
 
     public function resolve(Request $request): Request
     {

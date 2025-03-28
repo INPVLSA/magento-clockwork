@@ -2,7 +2,7 @@
 
 namespace Inpvlsa\Clockwork\Plugin\Framework\App;
 
-use Inpvlsa\Clockwork\Model\Clockwork\Service;
+use Inpvlsa\Clockwork\Service\Clockwork\Service;
 use Inpvlsa\Clockwork\Model\Profiler\ClockworkProfilerDriver;
 use Magento\Framework\App\FrontController;
 use Magento\Framework\App\RequestInterface;
@@ -10,26 +10,23 @@ use Magento\Framework\Profiler;
 
 class FrontControllerClockwork
 {
+    protected Service $clockworkService;
+    protected ClockworkProfilerDriver $driver;
+
     public function __construct(
-        protected Service $clockworkService,
-        protected ClockworkProfilerDriver $driver
-    ) {}
+        Service $clockworkService,
+        ClockworkProfilerDriver $driver
+    ) {
+        $this->driver = $driver;
+        $this->clockworkService = $clockworkService;
+    }
 
     public function beforeDispatch(FrontController $subject, RequestInterface $request): void
     {
-        $this->clockworkService->initialize($request);
+        $this->clockworkService->initializeForTracking($request);
 
         if ($this->clockworkService->getStatus()) {
             Profiler::add($this->driver);
         }
-    }
-
-    public function afterDispatch(FrontController $subject, $result)
-    {
-        if ($this->clockworkService->getStatus()) {
-            $this->clockworkService->finish();
-        }
-
-        return $result;
     }
 }
