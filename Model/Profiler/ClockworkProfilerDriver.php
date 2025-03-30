@@ -6,6 +6,7 @@ use Clockwork\Clockwork;
 use Clockwork\Request\Timeline\Event;
 use Inpvlsa\Clockwork\Service\Clockwork\Service;
 use Inpvlsa\Clockwork\Model\Profiler\GroupHandler\AbstractGroupHandler;
+use Magento\Framework\Profiler;
 use Magento\Framework\Profiler\Driver\Standard\OutputInterface;
 use Magento\Framework\Profiler\Driver\Standard\Stat;
 use Magento\Framework\Profiler\DriverInterface;
@@ -30,13 +31,34 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
      */
     protected array $activeHandlers = [];
 
+    protected bool $outOfInterceptionProfilerStartEmulated = false;
+
     protected function clock(): Clockwork
     {
         return \Clockwork\Support\Vanilla\Clockwork::instance()->getClockwork();
     }
 
+    protected function emulateOutOfInterceptionProfilerStart(): void
+    {
+        $this->outOfInterceptionProfilerStartEmulated = true;
+
+        try {
+            // Trying to stop first. In case some Profiler driver pre-set for Magento emulation can cause error
+            Profiler::stop('magento');
+        } catch (\InvalidArgumentException $e) {
+        }
+        Profiler::start('magento');
+    }
+
     public function start($timerId, array $tags = null): void
     {
+        // Some calls of Magento Profiler being called outside Plugin-intercept able code
+        // Profiler::start('magento') being called before current driver being set and enabled.
+        // To evade errors like 'Profiler `magento` has not been started' we emulate Profiler::start('magento') call
+        if ($this->outOfInterceptionProfilerStartEmulated === false) {
+            $this->emulateOutOfInterceptionProfilerStart();
+        }
+
         if (Service::$enabled) {
             if ($this->tryResolveForDefinedEntity($timerId, $tags)) {
 
