@@ -53,7 +53,7 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
         Profiler::start('magento');
     }
 
-    public function start($timerId, array $tags = null): void
+    public function start($timerId, ?array $tags = null): void
     {
         if ($this->firstProfilerCall === true) {
             $this->firstProfilerCall = false;
