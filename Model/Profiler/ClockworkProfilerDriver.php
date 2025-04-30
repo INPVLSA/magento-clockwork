@@ -6,6 +6,7 @@ use Clockwork\Clockwork;
 use Clockwork\Request\Timeline\Event;
 use Inpvlsa\Clockwork\Service\Clockwork\Service;
 use Inpvlsa\Clockwork\Model\Profiler\GroupHandler\AbstractGroupHandler;
+use Magento\Framework\Profiler;
 use Magento\Framework\Profiler\Driver\Standard\OutputInterface;
 use Magento\Framework\Profiler\Driver\Standard\Stat;
 use Magento\Framework\Profiler\DriverInterface;
@@ -30,14 +31,36 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
      */
     protected array $activeHandlers = [];
 
+    protected bool $firstProfilerCall = true;
+
     protected function clock(): Clockwork
     {
         return \Clockwork\Support\Vanilla\Clockwork::instance()->getClockwork();
     }
 
-    public function start($timerId, array $tags = null): void
+    /**
+     * Some calls of Magento Profiler being called outside Plugin-intercept able code
+     * Profiler::start('magento') being called before current driver being set and enabled.
+     * To evade errors like 'Profiler `magento` has not been started' we emulate Profiler::start('magento') call
+     */
+    protected function emulateOutOfInterceptionProfilerStart(): void
     {
-        if (Service::$enabled) {
+        try {
+            // Trying to stop first. In case some Profiler driver pre-set for Magento emulation can cause error
+            Profiler::stop('magento');
+        } catch (\InvalidArgumentException $e) {
+        }
+        Profiler::start('magento');
+    }
+
+    public function start($timerId, ?array $tags = null): void
+    {
+        if ($this->firstProfilerCall === true) {
+            $this->firstProfilerCall = false;
+            $this->emulateOutOfInterceptionProfilerStart();
+        }
+
+        if (Service::$enabled && $timerId != 'magento') {
             if ($this->tryResolveForDefinedEntity($timerId, $tags)) {
 
                 return;
@@ -80,6 +103,11 @@ class ClockworkProfilerDriver implements DriverInterface, OutputInterface
 
                 return;
             }
+
+            if ($timerId === 'magento->EVENT:model_load_before') {
+                return;
+            }
+
             $this->clock()->event($timerId)->end();
 
             unset($this->nameCache[$timerId]);

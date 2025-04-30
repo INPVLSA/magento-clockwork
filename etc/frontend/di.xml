@@ -41,6 +41,7 @@
                 <item name="collection" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoCollectionDataSource</item>
                 <item name="cache" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\CacheDataSource</item>
                 <item name="log" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MonologDataSource</item>
+                <item name="customer" xsi:type="object">Inpvlsa\Clockwork\Model\Clockwork\DataSource\MagentoCustomerSessionDataSource</item>
             </argument>
         </arguments>
     </type>
