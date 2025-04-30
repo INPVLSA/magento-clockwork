@@ -6,4 +6,8 @@
     <event name="controller_front_send_response_before">
         <observer name="clockwork_controller_front_send_response_before" instance="Inpvlsa\Clockwork\Observer\ControllerFrontSendResponseBefore"/>
     </event>
+
+    <event name="customer_session_init">
+        <observer name="clockwork_customer_session_init" instance="Inpvlsa\Clockwork\Observer\CustomerSessionInit"/>
+    </event>
 </config>
