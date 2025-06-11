@@ -2,6 +2,8 @@
 
 namespace Inpvlsa\Clockwork\Service\Clockwork\Authenticator;
 
+use Magento\Store\Model\StoreManagerInterface;
+
 class MagentoBaseUrlAuthenticator implements ClockworkAuthenticatorInterface
 {
     private const ALLOWED_HOSTS = [
@@ -13,6 +15,14 @@ class MagentoBaseUrlAuthenticator implements ClockworkAuthenticatorInterface
             '.docker'
         ]
     ];
+
+    protected StoreManagerInterface $storeManager;
+
+    public function __construct(
+        StoreManagerInterface $storeManager
+    ) {
+        $this->storeManager = $storeManager;
+    }
 
     public function attempt(): bool
     {
