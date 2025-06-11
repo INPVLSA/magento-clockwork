@@ -30,10 +30,6 @@ class MagentoBaseUrlAuthenticator implements ClockworkAuthenticatorInterface
         $baseUrl = $store->getBaseUrl();
         $baseUrl = parse_url($baseUrl, PHP_URL_HOST);
 
-        if (in_array($baseUrl, self::ALLOWED_HOSTS['host'], true)) {
-            return true;
-        }
-
         foreach (self::ALLOWED_HOSTS['host_suffix'] as $host_suffix) {
             if (str_ends_with($baseUrl, $host_suffix)) {
                 return true;
